@@ -31,7 +31,7 @@ const QuestionsScreen = ({ navigation }) => {
         </TouchableOpacity>
       </View>
       <Text style={{ fontWeight: "bold", fontSize: 22 }}>
-        What do you like?
+        Places to explore 
       </Text>
       <View style={styles.tagsContainer}>
         {questions.map((tag) => (

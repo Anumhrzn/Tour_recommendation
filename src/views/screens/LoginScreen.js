@@ -15,6 +15,7 @@ import { addUser } from "../../services/Queries";
 const LoginScreen = ({ navigation }) => {
   const [isLoading, setLoading] = useState(false);
   const [username, setUsername] = useState("");
+  // const [userid, setUserid] = useState("");
   const [errors, setErrors] = useState([]);
 
   const handleLogin = () => {
@@ -24,14 +25,16 @@ const LoginScreen = ({ navigation }) => {
       setLoading(true);
       addUser(username)
         .then((val) => {
+          console.log(val);
           if (val) {
-            ToastAndroid.show("User already exist!!", ToastAndroid.SHORT);
+            ToastAndroid.show("User already exists!!", ToastAndroid.SHORT);
           } else {
             navigation.navigate("QuestionsScreen");
           }
           setLoading(false);
         })
         .catch((e) => {
+          console.log(e);
           setLoading(false);
         });
     }
@@ -54,6 +57,15 @@ const LoginScreen = ({ navigation }) => {
           onChangeText={handleChange}
         />
       </View>
+
+      {/* <View style={styles.inputContainer}>
+        <TextInput
+          placeholder="Enter your userid"
+          style={{ color: COLORS.black, flex: 1 }}
+          value={userid}
+          onChangeText={(userid) => setUserid(userid)}
+        />
+      </View> */}
       {errors.map((e) => (
         <Text key={e} style={{ color: COLORS.red }}>
           {e}

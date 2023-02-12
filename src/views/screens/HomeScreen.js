@@ -137,9 +137,7 @@ const HomeScreen = ({ navigation }) => {
                   ))}
                 </View>
                 <View style={style.closeButton}>
-                  <TouchableOpacity
-                    onPress={() => setRecommendations([])}
-                  >
+                  <TouchableOpacity onPress={() => setRecommendations([])}>
                     <AntDesign
                       name="close"
                       style={{ color: COLORS.black }}
@@ -152,7 +150,7 @@ const HomeScreen = ({ navigation }) => {
           </View>
         </View>
         <ListCategories />
-        <Text style={style.sectionTitle}>Places </Text>
+        <Text style={style.sectionTitle}>Popular Attractions</Text>
         <View>
           <FlatList
             contentContainerStyle={{ paddingLeft: 20 }}
@@ -161,7 +159,7 @@ const HomeScreen = ({ navigation }) => {
             data={places}
             renderItem={({ item }) => <Card place={item} />}
           />
-          <Text style={style.sectionTitle}>Recommended</Text>
+          <Text style={style.sectionTitle}>Recommended Places For You</Text>
           <FlatList
             snapToInterval={width - 20}
             contentContainerStyle={{ paddingLeft: 20, paddingBottom: 20 }}

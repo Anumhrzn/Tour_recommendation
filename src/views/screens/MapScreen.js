@@ -1,13 +1,43 @@
-import { View, Text, StyleSheet, TouchableOpacity } from "react-native";
+import { View, Text, StyleSheet, TouchableOpacity, Button } from "react-native";
 import { Marker } from "react-native-maps";
 import MapView from "react-native-maps";
 import { datas } from "../../const/data";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import COLORS from "../../const/colors";
 import { TextInput } from "react-native-gesture-handler";
 import Icon from "react-native-vector-icons/MaterialIcons";
+import * as Location from "expo-location";
 
 export const MapScreen = () => {
+  const [mapRegion, setMapRegion] = useState({
+    latitude: 27.7172,
+    longitude: 85.324,
+    latitudeDelta: 0.0922,
+    longitudeDelta: 0.0421,
+  });
+
+  const userLocation = async () => {
+    let { status } = await Location.requestForegroundPermissionsAsync();
+    if (status !== "granted") {
+      setErrorMsg("Permission to access location was denied");
+      return;
+    }
+
+    let location = await Location.getCurrentPositionAsync({
+      enableHighAccuracy: true,
+    });
+    setMapRegion({
+      latitude: location.coords.latitude,
+      longitude: location.coords.longitude,
+      latitudeDelta: 0.0922,
+      longitudeDelta: 0.0421,
+    });
+    console.log(location.coords.latitude, location.coords.longitude);
+  };
+
+  useEffect(() => {
+    userLocation();
+  }, []);
   const [searchText, setSearchText] = useState("");
   const [searchResults, setSearchResults] = useState([]);
 
@@ -28,7 +58,9 @@ export const MapScreen = () => {
           longitudeDelta: 0.0421,
         }}
         style={styles.map}
+        region={mapRegion}
       >
+        <Marker coordinate={mapRegion} title="Your current location"></Marker>
         {searchResults.map((data) => (
           <Marker
             key={data.id}
@@ -39,6 +71,7 @@ export const MapScreen = () => {
           />
         ))}
       </MapView>
+      <Button title="Get Location" onPress={userLocation}></Button>
       <View style={styles.inputContainer}>
         <TextInput
           placeholder="Search place"
