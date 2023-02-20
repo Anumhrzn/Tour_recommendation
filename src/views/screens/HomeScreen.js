@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import {
   SafeAreaView,
   StyleSheet,
@@ -16,12 +16,13 @@ import COLORS from "../../const/colors";
 import Icon from "react-native-vector-icons/MaterialIcons";
 import places from "../../const/places";
 import { useState } from "react";
-import { getRecommendations } from "../../services/Queries";
+import { getRecommendations, getUserID } from "../../services/Queries";
 import AntDesign from "react-native-vector-icons/AntDesign";
 
 const { width } = Dimensions.get("screen");
 const HomeScreen = ({ navigation }) => {
   const [searchText, setSearchText] = useState("");
+  const [recommendationPlaces, setRecommendationPlaces] = useState([]);
   const [recommendations, setRecommendations] = useState([]);
   const handleSearch = async () => {
     if (searchText !== "") {
@@ -30,7 +31,14 @@ const HomeScreen = ({ navigation }) => {
     }
   };
   const categoryIcons = [
-    <Icon name="flight" size={25} color={COLORS.primary} />,
+    <Icon
+      name="flight"
+      size={25}
+      color={COLORS.primary}
+      onPress={() => {
+        navigation.navigate("SearchScreen");
+      }}
+    />,
     <Icon name="beach-access" size={25} color={COLORS.primary} />,
     <Icon name="near-me" size={25} color={COLORS.primary} />,
     <Icon
@@ -78,7 +86,10 @@ const HomeScreen = ({ navigation }) => {
 
   const RecommendedCard = ({ place }) => {
     return (
-      <ImageBackground style={style.rmCardImage} source={place.image}>
+      <ImageBackground
+        style={style.rmCardImage}
+        source={require("../../assets/Swoyambhu.png")}
+      >
         <Text
           style={{
             color: COLORS.white,
@@ -87,7 +98,7 @@ const HomeScreen = ({ navigation }) => {
             marginTop: 10,
           }}
         >
-          {place.name}
+          {place}
         </Text>
         <View
           style={{
@@ -99,6 +110,16 @@ const HomeScreen = ({ navigation }) => {
       </ImageBackground>
     );
   };
+
+  // useEffect(() => {
+  //   const getRecommendationPlaces = async () => {
+  //     const data = await getUserID(20);
+  //     //console.log(data);
+  //     setRecommendationPlaces([...data]);
+  //   };
+  //   getRecommendationPlaces();
+  // }, []);
+  // console.log("rendered");
   return (
     <SafeAreaView style={{ flex: 1, backgroundColor: COLORS.white }}>
       <StatusBar translucent={false} backgroundColor={COLORS.primary} />
@@ -165,7 +186,7 @@ const HomeScreen = ({ navigation }) => {
             contentContainerStyle={{ paddingLeft: 20, paddingBottom: 20 }}
             showsHorizontalScrollIndicator={false}
             horizontal
-            data={places}
+            data={recommendationPlaces}
             renderItem={({ item }) => <RecommendedCard place={item} />}
           />
         </View>

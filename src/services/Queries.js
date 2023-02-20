@@ -47,6 +47,7 @@ export function getUserID(uuid) {
       throw e;
     })
     .then((res) => {
+      console.log(res);
       return res.json().then((val) => {
         console.log(val);
         return val;
