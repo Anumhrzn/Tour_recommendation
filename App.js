@@ -9,6 +9,8 @@ import { MapScreen } from "./src/views/screens/MapScreen";
 import LoginScreen from "./src/views/screens/LoginScreen";
 import QuestionsScreen from "./src/views/screens/QuestionsScreen";
 import SearchScreen from "./src/views/screens/SearchScreen";
+import WeatherScreen from "./src/views/screens/WeatherScreen";
+import NavigationScreen from "./src/views/screens/NavigationScreen";
 const Stack = createStackNavigator();
 
 const App = () => {
@@ -22,6 +24,8 @@ const App = () => {
         <Stack.Screen name="LoginScreen" component={LoginScreen} />
         <Stack.Screen name="QuestionsScreen" component={QuestionsScreen} />
         <Stack.Screen name="SearchScreen" component={SearchScreen} />
+        <Stack.Screen name="WeatherScreen" component={WeatherScreen} />
+        <Stack.Screen name="NavigationScreen" component={NavigationScreen} />
       </Stack.Navigator>
     </NavigationContainer>
   );

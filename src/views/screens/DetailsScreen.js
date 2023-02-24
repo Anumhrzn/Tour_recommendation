@@ -62,6 +62,16 @@ const DetailsScreen = ({ navigation, route }) => {
           >
             {place.name}
           </Text>
+          <View style={style.iconNavigation}>
+            <Icon
+              name="navigation"
+              color={COLORS.primary}
+              size={30}
+              onPress={() => {
+                navigation.navigate("NavigationScreen", place);
+              }}
+            />
+          </View>
         </View>
         <Text style={{ marginTop: 20, fontWeight: "bold", fontSize: 20 }}>
           About the place
@@ -73,6 +83,18 @@ const DetailsScreen = ({ navigation, route }) => {
 };
 
 const style = StyleSheet.create({
+  iconNavigation: {
+    height: 60,
+    width: 60,
+    position: "absolute",
+    top: -10,
+    backgroundColor: COLORS.white,
+    borderRadius: 30,
+    right: 4,
+    elevation: 10,
+    justifyContent: "center",
+    alignItems: "center",
+  },
   iconContainer: {
     height: 60,
     width: 60,

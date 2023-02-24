@@ -1,3 +1,4 @@
+import react from "react";
 import { View, Text, StyleSheet, TouchableOpacity, Button } from "react-native";
 import { Marker, Polyline } from "react-native-maps";
 import MapView from "react-native-maps";
@@ -9,15 +10,17 @@ import { TextInput } from "react-native-gesture-handler";
 import Icon from "react-native-vector-icons/MaterialIcons";
 import * as Location from "expo-location";
 import { directionConstants } from "../../const/dummy-contants";
+import { getDistance } from "../../services/Queries";
 
-export const MapScreen = () => {
+const NavigationScreen = ({ navigation, route }) => {
+  const place = route.params;
+  const [destination, setDestination] = useState(null);
   const [mapRegion, setMapRegion] = useState({
-    latitude: 27.7172,
-    longitude: 85.324,
+    latitude: place.coordinates.latitude,
+    longitude: place.coordinates.longitude,
     latitudeDelta: 0.0922,
     longitudeDelta: 0.0421,
   });
-
   const userLocation = async () => {
     let { status } = await Location.requestForegroundPermissionsAsync();
     if (status !== "granted") {
@@ -28,27 +31,23 @@ export const MapScreen = () => {
     let location = await Location.getCurrentPositionAsync({
       enableHighAccuracy: true,
     });
-    setMapRegion({
-      latitude: location.coords.latitude,
-      longitude: location.coords.longitude,
-      latitudeDelta: 0.0922,
-      longitudeDelta: 0.0421,
-    });
+    // setMapRegion({
+    //   latitude: location.coords.latitude,
+    //   longitude: location.coords.longitude,
+    //   latitudeDelta: 0.0922,
+    //   longitudeDelta: 0.0421,
+    // });
     console.log(location.coords.latitude, location.coords.longitude);
   };
 
   useEffect(() => {
     userLocation();
+    getDistance(place.coordinates).then((val) => {
+      if (val) {
+        setDestination(val);
+      }
+    });
   }, []);
-  const [searchText, setSearchText] = useState("");
-  const [searchResults, setSearchResults] = useState([]);
-
-  const handleSearch = () => {
-    const filterResults = datas.filter(
-      (data) => data.tags.amenity === searchText
-    );
-    setSearchResults(filterResults);
-  };
 
   return (
     <View style={styles.container}>
@@ -62,32 +61,29 @@ export const MapScreen = () => {
         style={styles.map}
         region={mapRegion}
       >
-        <Marker coordinate={mapRegion} title="Your current location"></Marker>
-        {searchResults.map((data) => (
-          <Marker
-            key={data.id}
-            coordinate={{ latitude: data.lat, longitude: data.lon }}
-            title={data.tags.name}
-            description="Description"
-            // image="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcS0P6n6x2zAyrg4r_gU7DzWxzM-_fyg8brA7NV_4jcAHQ&s"
+        {/* <Marker coordinate={mapRegion} title="Your current location"></Marker> */}
+        <Marker
+          coordinate={{
+            latitude: 27.7223208,
+            longitude: 85.2724667,
+          }}
+        />
+        <Marker coordinate={place.coordinates} />
+        {destination && (
+          <Polyline
+            coordinates={destination.path}
+            strokeColor="#4a80f5" // fallback for when `strokeColors` is not supported by the map-provider
+            strokeColors={["#7F0000"]}
+            strokeWidth={6}
           />
-        ))}
+        )}
       </MapView>
       <Button title="Get Location" onPress={userLocation}></Button>
-      <View style={styles.inputContainer}>
-        <TextInput
-          placeholder="Search place"
-          style={{ color: COLORS.black, flex: 1 }}
-          value={searchText}
-          onChangeText={setSearchText}
-        />
-        <TouchableOpacity onPress={handleSearch}>
-          <Icon name="search" size={28} />
-        </TouchableOpacity>
-      </View>
     </View>
   );
 };
+
+export default NavigationScreen;
 
 const styles = StyleSheet.create({
   container: {

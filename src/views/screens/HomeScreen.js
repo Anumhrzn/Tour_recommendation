@@ -39,7 +39,14 @@ const HomeScreen = ({ navigation }) => {
         navigation.navigate("SearchScreen");
       }}
     />,
-    <Icon name="beach-access" size={25} color={COLORS.primary} />,
+    <Icon
+      name="beach-access"
+      size={25}
+      color={COLORS.primary}
+      onPress={() => {
+        navigation.navigate("WeatherScreen");
+      }}
+    />,
     <Icon name="near-me" size={25} color={COLORS.primary} />,
     <Icon
       name="place"
@@ -146,6 +153,7 @@ const HomeScreen = ({ navigation }) => {
                 value={searchText}
                 onChangeText={setSearchText}
               />
+
               <TouchableOpacity onPress={handleSearch}>
                 <Icon name="search" size={28} />
               </TouchableOpacity>
