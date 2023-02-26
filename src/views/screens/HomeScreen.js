@@ -132,7 +132,23 @@ const HomeScreen = ({ navigation }) => {
       <StatusBar translucent={false} backgroundColor={COLORS.primary} />
       <View style={style.header}>
         <Icon name="sort" size={28} color={COLORS.white} />
-        <Icon name="notifications-none" size={28} color={COLORS.white} />
+        <Icon
+          name="person-pin"
+          size={28}
+          color={COLORS.white}
+          onPress={() => {
+            navigation.navigate("UserprofileScreen");
+          }}
+        />
+        <Icon
+          name="login"
+          size={28}
+          color={COLORS.white}
+          onPress={() => {
+            navigation.navigate("LoginScreen");
+          }}
+        />
+        <Icon name="notifications-none" size={28} color={COLORS.white} />   
       </View>
       <ScrollView showsVerticalScrollIndicator={false}>
         <View

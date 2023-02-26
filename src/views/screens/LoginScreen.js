@@ -9,7 +9,7 @@ import {
 import { useState } from "react";
 import COLORS from "../../const/colors";
 import { TouchableOpacity } from "react-native-gesture-handler";
-import QuestionsScreen from "./QuestionsScreen";
+// import QuestionsScreen from "./QuestionsScreen";
 import { addUser } from "../../services/Queries";
 
 const LoginScreen = ({ navigation }) => {
@@ -49,6 +49,11 @@ const LoginScreen = ({ navigation }) => {
 
   return (
     <View style={styles.container}>
+      <View>
+        <Text style={styles.text}>
+          Username
+        </Text>
+      </View>
       <View style={styles.inputContainer}>
         <TextInput
           placeholder="Enter your username"
@@ -57,20 +62,24 @@ const LoginScreen = ({ navigation }) => {
           onChangeText={handleChange}
         />
       </View>
-
-      {/* <View style={styles.inputContainer}>
+      <View>
+        <Text style={styles.text}>
+          Password
+        </Text>
+      </View>
+      <View style={styles.inputContainer}>
         <TextInput
-          placeholder="Enter your userid"
+          placeholder="Enter your password"
           style={{ color: COLORS.black, flex: 1 }}
-          value={userid}
-          onChangeText={(userid) => setUserid(userid)}
+          // value={userid}
+          // onChangeText={(userid) => setUserid(userid)}
         />
-      </View> */}
-      {errors.map((e) => (
+      </View>
+      {/* {errors.map((e) => (
         <Text key={e} style={{ color: COLORS.red }}>
           {e}
         </Text>
-      ))}
+      ))} */}
       <TouchableOpacity onPress={handleLogin}>
         {isLoading ? (
           <Text>Loading..</Text>
@@ -81,6 +90,20 @@ const LoginScreen = ({ navigation }) => {
             </Text>
           </View>
         )}
+      </TouchableOpacity>
+      <View>
+        <Text style={styles.qtext}>
+          Don't have an account yet?
+        </Text>
+      </View>
+      <TouchableOpacity onPress={() => {
+            navigation.navigate("Register");
+          }}>
+         <View style={styles.button}>
+            <Text style={{ fontWeight: "bold", color: COLORS.white }}>
+              Register
+            </Text>
+          </View>  
       </TouchableOpacity>
     </View>
   );
@@ -93,26 +116,44 @@ const styles = StyleSheet.create({
     height: "100%",
     alignItems: "center",
     justifyContent: "center",
+    // marginRight: 10
   },
   button: {
     backgroundColor: COLORS.primary,
-    borderRadius: 12,
-    padding: 12,
-    marginTop: 20,
+    borderRadius: 10,
+    paddingHorizontal: 20,
+    paddingVertical: 10,
+    marginTop: 10,
+    alignItems: "center"
   },
   inputContainer: {
     height: 50,
     width: "90%",
     backgroundColor: COLORS.white,
     borderRadius: 10,
-    top: 50,
+    top: 0,
     flexDirection: "row",
-    justifyContent: "space-between",
+    justifyContent: "flex-start",
     paddingHorizontal: 20,
     alignItems: "center",
-    marginBottom: 70,
+    marginBottom: 20,
     elevation: 12,
   },
+  text: {
+    marginTop: 10,
+    marginBottom: 5,
+    fontWeight: 'bold',
+    fontSize: 16,
+    alignItems: "baseline"
+  },
+  qtext: {
+    marginTop: 150,
+    marginBottom: 5,
+    fontWeight: 'bold',
+    fontSize: 16,
+    alignItems: "baseline"
+  }
+
 });
 
 export default LoginScreen;
