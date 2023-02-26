@@ -1,2 +1,1 @@
 node_modules
-rm -f ./.git/index.lock
