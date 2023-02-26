@@ -50,7 +50,7 @@ const DetailsScreen = ({ navigation, route }) => {
         <View style={style.iconContainer}>
           <Icon name="favorite" color={COLORS.red} size={30} />
         </View>
-        <View style={{ flexDirection: "row", marginTop: 10 }}>
+        <View style={{ flexDirection: "row", marginTop: -10 }}>
           <Icon name="place" size={28} color={COLORS.primary} />
           <Text
             style={{
@@ -73,10 +73,10 @@ const DetailsScreen = ({ navigation, route }) => {
             />
           </View>
         </View>
-        <Text style={{ marginTop: 20, fontWeight: "bold", fontSize: 20 }}>
+        <Text style={{ marginTop: 10, fontWeight: "bold", fontSize: 20 ,color: COLORS.primary}}>
           About the place
         </Text>
-        <Text style={{ marginTop: 20, lineHeight: 22 }}>{place.details}</Text>
+        <Text style={{ marginTop: 10, lineHeight: 22 }}>{place.details}</Text>
       </View>
     </SafeAreaView>
   );
@@ -87,10 +87,10 @@ const style = StyleSheet.create({
     height: 60,
     width: 60,
     position: "absolute",
-    top: -10,
+    top: 5,
     backgroundColor: COLORS.white,
     borderRadius: 30,
-    right: 4,
+    right: 1,
     elevation: 10,
     justifyContent: "center",
     alignItems: "center",
