@@ -19,6 +19,27 @@ export function addUser(name) {
       });
     });
 }
+export function addUserRating(place, rating) {
+  return fetch("http://192.168.63.87:5000/api/rating/addUserRating", {
+    body: JSON.stringify({
+      place: place,
+      rating: rating,
+    }),
+    headers: {
+      Accept: "application/json",
+      "Content-Type": "application/json",
+    },
+    method: "POST",
+  })
+    .then((res) => {
+      if (!res.ok) {
+        throw new Error("Network response was not ok");
+      }
+    })
+    .catch((error) => {
+      console.error("There was a problem with the fetch operation:", error);
+    });
+}
 
 export function getRecommendations(title) {
   return fetch(`http://192.168.1.66:5000/api/recommendations/${title}`, {
