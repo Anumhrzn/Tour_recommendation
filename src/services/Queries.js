@@ -1,5 +1,5 @@
 export function addUser(name) {
-  return fetch("http://192.168.1.91:5000/api/users/addUser", {
+  return fetch("http://192.168.1.66:5000/api/users/addUser", {
     body: JSON.stringify({
       name: name,
     }),
@@ -21,7 +21,7 @@ export function addUser(name) {
 }
 
 export function getRecommendations(title) {
-  return fetch(`http://192.168.1.91:5000/api/recommendations/${title}`, {
+  return fetch(`http://192.168.1.66:5000/api/recommendations/${title}`, {
     headers: {
       Accept: "application/json",
     },
@@ -38,7 +38,7 @@ export function getRecommendations(title) {
 }
 
 export function getUserID(uuid) {
-  return fetch(`http://192.168.1.91:5000/api/recommendations/user/${uuid}`, {
+  return fetch(`http://192.168.1.66:5000/api/recommendations/user/${uuid}`, {
     headers: {
       Accept: "application/json",
     },
@@ -66,7 +66,7 @@ export function getDistance(destinationPoint) {
       destination_point: destinationPoint,
     })
   );
-  return fetch(`http://192.168.1.91:5000/api/distance`, {
+  return fetch(`http://192.168.1.66:5000/api/distance`, {
     headers: {
       Accept: "application/json",
       "Content-Type": "application/json",
