@@ -10,7 +10,7 @@ import {
 } from "react-native";
 import Icon from "react-native-vector-icons/MaterialIcons";
 import COLORS from "../../const/colors";
-import StarRating from 'react-native-star-rating-widget';
+import StarRating from "react-native-star-rating-widget";
 
 const DetailsScreen = ({ navigation, route }) => {
   const place = route.params;
@@ -18,7 +18,7 @@ const DetailsScreen = ({ navigation, route }) => {
   return (
     <SafeAreaView style={{ flex: 1, backgroundColor: COLORS.white }}>
       <StatusBar translucent backgroundColor="rgba(0,0,0,0)" />
-      <ImageBackground style={{ flex: 0.5}} source={place.image}>
+      <ImageBackground style={{ flex: 0.7 }} source={place.image}>
         <View style={style.header}>
           <Icon
             name="arrow-back-ios"
@@ -42,33 +42,49 @@ const DetailsScreen = ({ navigation, route }) => {
               color: COLORS.primary,
             }}
           >
-
             {place.name}
-
           </Text>
+          <View style={style.iconNavigation}>
+            <Icon
+              name="navigation"
+              color={COLORS.primary}
+              size={30}
+              onPress={() => {
+                navigation.navigate("NavigationScreen", place);
+              }}
+            />
+          </View>
         </View>
-        <View style={style.ratingContainer}>
 
-          <StarRating 
-            maxStars={5}
-            rating={rating}
-            setRating={setRating}
-            size={35}
-          />
-        </View>
-        <TouchableOpacity style={style.submitButton} onPress={() => alert(`You have rated ${rating} stars to the place`)}>
-          <Text style={style.submitText}>
-            SUBMIT
-            </Text>
-        </TouchableOpacity>
         <Text style={{ marginTop: 20, fontWeight: "bold", fontSize: 20 }}>
-        <Text style={{ marginTop: 10, fontWeight: "bold", fontSize: 20 ,color: COLORS.primary}}>
-          About the place
-        </Text>
+          <Text
+            style={{
+              marginTop: 10,
+              fontWeight: "bold",
+              fontSize: 20,
+              color: COLORS.primary,
+            }}
+          >
+            About the place
+          </Text>
         </Text>
         <Text style={{ marginTop: 10, lineHeight: 22 }}>{place.details}</Text>
       </View>
-    </SafeAreaView>  
+      <View style={style.ratingContainer}>
+        <StarRating
+          maxStars={5}
+          rating={rating}
+          setRating={setRating}
+          size={35}
+        />
+      </View>
+      <TouchableOpacity
+        style={style.submitButton}
+        onPress={() => alert(`You have rated ${rating} stars to the place`)}
+      >
+        <Text style={style.submitText}>SUBMIT</Text>
+      </TouchableOpacity>
+    </SafeAreaView>
   );
 };
 const style = StyleSheet.create({
@@ -126,13 +142,13 @@ const style = StyleSheet.create({
     justifyContent: "center",
     alignItems: "center",
     borderRadius: 20,
+    marginLeft:20,
   },
   submitText: {
     color: COLORS.white,
     fontWeight: "bold",
     fontSize: 18,
   },
-  
 });
 
 export default DetailsScreen;
