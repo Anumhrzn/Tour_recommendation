@@ -19,7 +19,7 @@ import { TextInput } from "react-native-gesture-handler";
 const DetailsScreen = ({ navigation, route }) => {
   const place = route.params;
   const [isLoading, setLoading] = useState(false);
-  const [rating, setRating] = useState(0);
+  const [rating, setRating] = useState(5);
   const [description, setDescription] = useState("");
   const [errors, setErrors] = useState([]);
 
@@ -27,25 +27,29 @@ const DetailsScreen = ({ navigation, route }) => {
     setRating(rating);
   };
   const handleSubmit = () => {
-    if (rating === "") {
-      setErrors(["rating cannot be empty"]);
-    } else {
-      setLoading(true);
-      addUserRating(place.name, rating)
-        .then((val) => {
+    setLoading(true);
+    const userRating = {
+      name: "Guest",
+      place_name: place.name,
+      rating: rating,
+      description: description,
+    };
+    addUserRating(userRating)
+      .then((val) => {
+        console.log(val);
+        if (val) {
           console.log(val);
-          if (val) {
-            ToastAndroid.show("Rating already exists!!", ToastAndroid.SHORT);
-          } else {
-            navigation.navigate("DetailsScreen");
-          }
-          setLoading(false);
-        })
-        .catch((e) => {
-          console.log(e);
-          setLoading(false);
-        });
-    }
+          debugger;
+          ToastAndroid.show("Successfully added rating", ToastAndroid.SHORT);
+        } else {
+          ToastAndroid.show("Failed to add rating", ToastAndroid.SHORT);
+        }
+        setLoading(false);
+      })
+      .catch((e) => {
+        console.log(e);
+        setLoading(false);
+      });
   };
 
   const onChange = (newRating) => {
@@ -69,7 +73,14 @@ const DetailsScreen = ({ navigation, route }) => {
         </ImageBackground>
         <View style={style.detailsContainer}>
           <View style={style.iconContainer}>
-            <Icon name="favorite" color={COLORS.red} size={30} />
+            <Icon
+              name="navigation"
+              color={COLORS.primary}
+              size={30}
+              onPress={() => {
+                navigation.navigate("NavigationScreen");
+              }}
+            />
           </View>
           <View style={{ flexDirection: "row", marginTop: -10 }}>
             <Icon name="place" size={28} color={COLORS.primary} />
@@ -114,7 +125,9 @@ const DetailsScreen = ({ navigation, route }) => {
             />
           </View>
           <TouchableOpacity style={style.submitButton} onPress={handleSubmit}>
-            <Text style={style.submitText}>SUBMIT</Text>
+            <Text style={style.submitText}>
+              {isLoading ? "loading.." : "SUMBIT"}
+            </Text>
           </TouchableOpacity>
         </View>
       </ScrollView>
