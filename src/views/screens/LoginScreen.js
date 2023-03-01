@@ -11,6 +11,7 @@ import COLORS from "../../const/colors";
 import { TouchableOpacity } from "react-native-gesture-handler";
 // import QuestionsScreen from "./QuestionsScreen";
 import { addUser } from "../../services/Queries";
+import HomeScreen from "./HomeScreen";
 
 const LoginScreen = ({ navigation }) => {
   const [isLoading, setLoading] = useState(false);
@@ -48,7 +49,8 @@ const LoginScreen = ({ navigation }) => {
   };
 
   return (
-    <View style={styles.container}>
+    <View style={styles.maincontainer}>
+      <Text style={styles.mainheader}>Welcome Back!</Text>
       <View>
         <Text style={styles.text}>
           Username
@@ -80,7 +82,8 @@ const LoginScreen = ({ navigation }) => {
           {e}
         </Text>
       ))} */}
-      <TouchableOpacity onPress={handleLogin}>
+      {/* <TouchableOpacity onPress={handleLogin}> */}
+      <TouchableOpacity onPress={() => navigation.navigate("HomeScreen")}>
         {isLoading ? (
           <Text>Loading..</Text>
         ) : (
@@ -110,13 +113,19 @@ const LoginScreen = ({ navigation }) => {
 };
 
 const styles = StyleSheet.create({
-  container: {
+  maincontainer: {
     flexDirection: "column",
     width: "100%",
     height: "100%",
-    alignItems: "center",
+    // alignItems: "center",
     justifyContent: "center",
     // marginRight: 10
+  },
+  mainheader: {
+    fontSize: 30,
+    fontWeight: "bold",
+    color: COLORS.primary,
+    marginHorizontal: 30,
   },
   button: {
     backgroundColor: COLORS.primary,
@@ -124,11 +133,11 @@ const styles = StyleSheet.create({
     paddingHorizontal: 20,
     paddingVertical: 10,
     marginTop: 10,
+    marginHorizontal: 60,
     alignItems: "center"
   },
   inputContainer: {
     height: 50,
-    width: "90%",
     backgroundColor: COLORS.white,
     borderRadius: 10,
     top: 0,
@@ -137,11 +146,13 @@ const styles = StyleSheet.create({
     paddingHorizontal: 20,
     alignItems: "center",
     marginBottom: 20,
+    marginHorizontal: 30,
     elevation: 12,
   },
   text: {
     marginTop: 10,
     marginBottom: 5,
+    marginHorizontal: 30,
     fontWeight: 'bold',
     fontSize: 16,
     alignItems: "baseline"
@@ -151,7 +162,8 @@ const styles = StyleSheet.create({
     marginBottom: 5,
     fontWeight: 'bold',
     fontSize: 16,
-    alignItems: "baseline"
+    alignItems: "center",
+    marginHorizontal: 110,
   }
 
 });

@@ -131,7 +131,11 @@ const HomeScreen = ({ navigation }) => {
     <SafeAreaView style={{ flex: 1, backgroundColor: COLORS.white }}>
       <StatusBar translucent={false} backgroundColor={COLORS.primary} />
       <View style={style.header}>
-        <Icon name="sort" size={28} color={COLORS.white} />
+        <TouchableOpacity
+          style={{alignItems: "flex-end", margin: 16}}
+        >
+          <Icon name="sort" size={28} color={COLORS.white}/>
+        </TouchableOpacity>
         <Icon
           name="person-pin"
           size={28}
@@ -139,16 +143,7 @@ const HomeScreen = ({ navigation }) => {
           onPress={() => {
             navigation.navigate("UserprofileScreen");
           }}
-        />
-        <Icon
-          name="login"
-          size={28}
-          color={COLORS.white}
-          onPress={() => {
-            navigation.navigate("LoginScreen");
-          }}
-        />
-        <Icon name="notifications-none" size={28} color={COLORS.white} />   
+        />   
       </View>
       <ScrollView showsVerticalScrollIndicator={false}>
         <View
