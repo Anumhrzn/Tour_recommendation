@@ -7,7 +7,7 @@ import HomeScreen from "./src/views/screens/HomeScreen";
 import DetailsScreen from "./src/views/screens/DetailsScreen";
 import { MapScreen } from "./src/views/screens/MapScreen";
 import LoginScreen from "./src/views/screens/LoginScreen";
-// import UserprofileScreen from "./src/views/screens/UserprofileScreen";
+import UserprofileScreen from "./src/views/screens/UserprofileScreen";
 import Register from "./src/views/screens/Register";
 import QuestionsScreen from "./src/views/screens/QuestionsScreen";
 import SearchScreen from "./src/views/screens/SearchScreen";

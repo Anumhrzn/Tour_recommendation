@@ -1,6 +1,16 @@
+import { API_URL } from '@env';
+
+// fetch(API_URL + '/users')
+//   .then(response => response.json())
+//   .then(data => console.log(data))
+//   .catch(error => console.error(error));
+
 export function addUser(name) {
-  return fetch("http://192.168.1.91:5000/api/users/addUser", {
+  return fetch("http://192.168.60.182:5000/api/users/addUser", {
     body: JSON.stringify({
+      user_name: user_name,
+      password: password,
+      id: id,
       name: name,
     }),
     headers: {
@@ -21,7 +31,7 @@ export function addUser(name) {
 }
 
 export function getRecommendations(title) {
-  return fetch(`http://192.168.1.91:5000/api/recommendations/${title}`, {
+  return fetch(`http://192.168.60.182:5000/api/recommendations/${title}`, {
     headers: {
       Accept: "application/json",
     },
@@ -38,7 +48,7 @@ export function getRecommendations(title) {
 }
 
 export function getUserID(uuid) {
-  return fetch(`http://192.168.1.91:5000/api/recommendations/user/${uuid}`, {
+  return fetch(`http://192.168.60.182:5000/api/recommendations/user/${uuid}`, {
     headers: {
       Accept: "application/json",
     },
@@ -66,7 +76,7 @@ export function getDistance(destinationPoint) {
       destination_point: destinationPoint,
     })
   );
-  return fetch(`http://192.168.1.91:5000/api/distance`, {
+  return fetch(`http://192.168.60.182:5000/api/distance`, {
     headers: {
       Accept: "application/json",
       "Content-Type": "application/json",
@@ -90,4 +100,33 @@ export function getDistance(destinationPoint) {
         return val;
       });
     });
+}
+
+export function addUserRating(userRating) {
+  debugger;
+  console.log({ userRating });
+  return fetch(API_URL + '/api/rating/addUserRating', {
+    body: JSON.stringify(userRating),
+    headers: {
+      Accept: "application/json",
+      "Content-Type": "application/json",
+    },
+    method: "POST",
+  })
+    .then((res) => {
+      if (!res.ok) {
+        throw new Error("Network response was not ok");
+      }
+    })
+    .catch((error) => {
+      console.error("There was a problem with the fetch operation:", error);
+    });
+}
+
+export function getRatings() {
+  return fetch("http://192.168.60.182:5000/api/rating/getRatings", {
+    headers: {
+      Accept: "application/json",
+    },
+  });
 }
