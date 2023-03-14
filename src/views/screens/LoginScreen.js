@@ -6,11 +6,12 @@ import {
   Button,
   ToastAndroid,
 } from "react-native";
+import Icon from "react-native-vector-icons/Ionicons";
 import { useState } from "react";
 import COLORS from "../../const/colors";
 import { TouchableOpacity } from "react-native-gesture-handler";
-import QuestionsScreen from "./QuestionsScreen";
 import { addUser } from "../../services/Queries";
+import Pressable from "react-native/Libraries/Components/Pressable/Pressable";
 
 const LoginScreen = ({ navigation }) => {
   const [isLoading, setLoading] = useState(false);
@@ -51,81 +52,157 @@ const LoginScreen = ({ navigation }) => {
   // };
 
   return (
-    <View style={styles.container}>
-      <View style={styles.inputContainer}>
-        <TextInput
-          placeholder="Enter your username"
-          style={{ color: COLORS.black, flex: 1 }}
+    <View style={styles.maincontainer}>
+      <Text style={styles.mainheader}>Welcome Back!</Text>
+      <View>
+        <Text style={styles.text}>
+          Username
+        </Text>
+        <TextInput 
+          style={styles.inputContainer}
+          placeholder= "Enter your username"
           value={username}
-          onChangeText={handleChange}
         />
       </View>
-      {/* <View style={styles.inputContainer}>
-        <Text style={{ color: COLORS.black, flex: 1 }}>User rating:</Text>
-        <View style={{ flexDirection: "row", alignItems: "center" }}>
-          {[1, 2, 3, 4, 5].map((i) => (
-            <TouchableOpacity key={i} onPress={() => handleRatingChange(i)}>
-              <Text style={{ color: i <= userRating ? COLORS.yellow : COLORS.grey }}>★</Text>
-            </TouchableOpacity>
-          ))}
-        </View>
-      </View> */}
 
-      {/* <View style={styles.inputContainer}>
-        <TextInput
-          placeholder="Enter your userid"
-          style={{ color: COLORS.black, flex: 1 }}
-          value={userid}
-          onChangeText={(userid) => setUserid(userid)}
+      <View>
+        <Text style={styles.text}>
+          Password
+        </Text>
+        <TextInput 
+          style={styles.inputContainer}
+          placeholder= "Enter your password"
+          secureTextEntry={true} //right={<TextInput.Icon name="eye-off-outline"/>}
+          // value={password}
         />
-      </View> */}
-      {errors.map((e) => (
+        <TouchableOpacity 
+        activeOpacity={0.8}
+        onPress={() => navigation.navigate("HomeScreen")}
+        > 
+        <View style={styles.button}>
+          <Text style={{ fontWeight: "bold", color: COLORS.white }}>
+            Login
+          </Text>
+        </View>
+      </TouchableOpacity>
+      </View>
+
+      <View>
+      <Text  onPress={() => navigation.navigate("RegisterScreen")}
+        style={styles.ptext}>Forgot password?</Text>
+      </View>
+
+      <View>
+        <Text style={styles.qtext}>Don't have an account yet?
+        </Text>
+        <Pressable onPress={() => navigation.navigate("RegisterScreen")}>
+            <Text style={styles.navtext}>Register</Text>
+          </Pressable>
+        {/* <TouchableOpacity 
+        activeOpacity={0.8}
+        onPress={() => navigation.navigate("RegisterScreen")}
+        > 
+        <View style={styles.button}>
+          <Text style={{ fontWeight: "bold", color: COLORS.white }}>
+            Register
+          </Text>
+        </View> 
+      </TouchableOpacity> */}
+      </View>
+
+      
+      {/* {errors.map((e) => (
         <Text key={e} style={{ color: COLORS.red }}>
           {e}
         </Text>
-      ))}
-      <TouchableOpacity onPress={handleLogin}>
+      ))} */}
+      {/* <TouchableOpacity onPress={handleLogin}>
         {isLoading ? (
           <Text>Loading..</Text>
-        ) : (
-          <View style={styles.button}>
-            <Text style={{ fontWeight: "bold", color: COLORS.white }}>
-              Login
-            </Text>
-          </View>
-        )}
-      </TouchableOpacity>
+        ) : ( 
+        onPress={() => navigation.navigate("RegisterScreen")}
+        > 
+        <View style={styles.button}>
+          <Text style={{ fontWeight: "bold", color: COLORS.white }}>
+            Login
+          </Text>
+        </View>
+      </TouchableOpacity> */}
     </View>
   );
 };
 
 const styles = StyleSheet.create({
-  container: {
+  maincontainer: {
     flexDirection: "column",
     width: "100%",
     height: "100%",
-    alignItems: "center",
+    // alignItems: "center",
     justifyContent: "center",
   },
+  mainheader: {
+    height: "10%",
+    fontSize: 30,
+    fontWeight: "bold",
+    color: COLORS.primary,
+    marginHorizontal: 100,
+  },
   button: {
+    width: "50%",
     backgroundColor: COLORS.primary,
-    borderRadius: 12,
-    padding: 12,
-    marginTop: 20,
+    borderRadius: 10,
+    padding: 10,
+    marginTop: 10,
+    alignItems: "center",
+    marginHorizontal: 100,
+
+    
   },
   inputContainer: {
     height: 50,
-    width: "90%",
     backgroundColor: COLORS.white,
     borderRadius: 10,
-    top: 50,
     flexDirection: "row",
     justifyContent: "space-between",
     paddingHorizontal: 20,
     alignItems: "center",
-    marginBottom: 70,
-    elevation: 12,
+    marginHorizontal: 30,
+    marginBottom: 20,
+    elevation: 5,
   },
+  text: {
+    marginTop: 10,
+    marginBottom: 5,
+    marginHorizontal: 30,
+    fontWeight: 'bold',
+    fontSize: 16,
+    alignItems: "baseline"
+  },
+  ptext: {
+    marginTop: 10,
+    marginBottom: 5,
+    marginHorizontal: 140,
+    fontWeight: 'bold',
+    fontSize: 16,
+    alignItems: "baseline"
+  },
+  qtext: {
+    marginTop: 150,
+    fontWeight: 'bold',
+    fontSize: 16,
+    alignItems: "center",
+    flexDirection: "row",
+    marginHorizontal: 110,
+  },
+  navtext: {
+    color: COLORS.primary,
+    fontWeight: 'bold',
+    alignItems: "center",
+    fontSize: 14,
+    marginHorizontal: 170,
+    // marginTop: 20,
+  },
+
 });
 
 export default LoginScreen;

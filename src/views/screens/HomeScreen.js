@@ -140,15 +140,7 @@ const HomeScreen = ({ navigation }) => {
             navigation.navigate("UserprofileScreen");
           }}
         />
-        <Icon
-          name="login"
-          size={28}
-          color={COLORS.white}
-          onPress={() => {
-            navigation.navigate("LoginScreen");
-          }}
-        />
-        <Icon name="notifications-none" size={28} color={COLORS.white} />   
+           
       </View>
       <ScrollView showsVerticalScrollIndicator={false}>
         <View
