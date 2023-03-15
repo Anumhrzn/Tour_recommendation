@@ -1,4 +1,6 @@
-import { API_URL } from '@env';
+import { API_URL } from "@env";
+const apiUrl = process.env.API_URL;
+console.log({ apiUrl });
 
 // fetch(API_URL + '/users')
 //   .then(response => response.json())
@@ -6,7 +8,7 @@ import { API_URL } from '@env';
 //   .catch(error => console.error(error));
 
 export function addUser(name) {
-  return fetch("http://192.168.60.182:5000/api/users/addUser", {
+  return fetch(`${apiUrl}/users/addUser`, {
     body: JSON.stringify({
       user_name: user_name,
       password: password,
@@ -31,7 +33,7 @@ export function addUser(name) {
 }
 
 export function getRecommendations(title) {
-  return fetch(`http://192.168.60.182:5000/api/recommendations/${title}`, {
+  return fetch(`${apiUrl}/recommendations/${title}`, {
     headers: {
       Accept: "application/json",
     },
@@ -48,7 +50,7 @@ export function getRecommendations(title) {
 }
 
 export function getUserID(uuid) {
-  return fetch(`http://192.168.60.182:5000/api/recommendations/user/${uuid}`, {
+  return fetch(`${apiUrl}/recommendations/user/${uuid}`, {
     headers: {
       Accept: "application/json",
     },
@@ -76,15 +78,15 @@ export function getDistance(destinationPoint) {
       destination_point: destinationPoint,
     })
   );
-  return fetch(`http://192.168.60.182:5000/api/distance`, {
+  return fetch(`${apiUrl}/distance`, {
     headers: {
       Accept: "application/json",
       "Content-Type": "application/json",
     },
     body: JSON.stringify({
       starting_point: {
-        latitude: 27.7223208,
-        longitude: 85.2724667,
+        latitude: 27.6756,
+        longitude: 85.3459,
       },
       destination_point: destinationPoint,
     }),
@@ -105,7 +107,7 @@ export function getDistance(destinationPoint) {
 export function addUserRating(userRating) {
   debugger;
   console.log({ userRating });
-  return fetch(API_URL + '/api/rating/addUserRating', {
+  return fetch(`${apiUrl}/rating/addUserRating`, {
     body: JSON.stringify(userRating),
     headers: {
       Accept: "application/json",
@@ -114,17 +116,18 @@ export function addUserRating(userRating) {
     method: "POST",
   })
     .then((res) => {
-      if (!res.ok) {
-        throw new Error("Network response was not ok");
-      }
+      return res.json().then((val) => {
+        console.log(val);
+        return val;
+      });
     })
     .catch((error) => {
-      console.error("There was a problem with the fetch operation:", error);
+      throw error;
     });
 }
 
 export function getRatings() {
-  return fetch("http://192.168.60.182:5000/api/rating/getRatings", {
+  return fetch(`${apiUrl}/rating/getRatings`, {
     headers: {
       Accept: "application/json",
     },

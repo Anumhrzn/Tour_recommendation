@@ -31,14 +31,7 @@ const HomeScreen = ({ navigation }) => {
     }
   };
   const categoryIcons = [
-    <Icon
-      name="flight"
-      size={25}
-      color={COLORS.primary}
-      onPress={() => {
-        navigation.navigate("SearchScreen");
-      }}
-    />,
+    <Icon name="flight" size={25} color={COLORS.primary} />,
     <Icon
       name="beach-access"
       size={25}
@@ -93,40 +86,44 @@ const HomeScreen = ({ navigation }) => {
 
   const RecommendedCard = ({ place }) => {
     return (
-      <ImageBackground
-        style={style.rmCardImage}
-        source={require("../../assets/Swoyambhu.png")}
+      <TouchableOpacity
+        activeOpacity={0.8}
+        onPress={() => navigation.navigate("DetailsScreen", place)}
       >
-        <Text
-          style={{
-            color: COLORS.white,
-            fontSize: 22,
-            fontWeight: "bold",
-            marginTop: 10,
-          }}
+        <ImageBackground
+          style={style.rmCardImage}
+          source={{ uri: place.image }}
         >
-          {place}
-        </Text>
-        <View
-          style={{
-            Flex: 1,
-            justifyContent: "space-between",
-            alignItems: "flex-end",
-          }}
-        ></View>
-      </ImageBackground>
+          <Text
+            style={{
+              color: COLORS.white,
+              fontSize: 22,
+              fontWeight: "bold",
+              marginTop: 10,
+            }}
+          >
+            {place.name}
+          </Text>
+          <View
+            style={{
+              Flex: 1,
+              justifyContent: "space-between",
+              alignItems: "flex-end",
+            }}
+          ></View>
+        </ImageBackground>
+      </TouchableOpacity>
     );
   };
 
-  // useEffect(() => {
-  //   const getRecommendationPlaces = async () => {
-  //     const data = await getUserID(20);
-  //     //console.log(data);
-  //     setRecommendationPlaces([...data]);
-  //   };
-  //   getRecommendationPlaces();
-  // }, []);
-  // console.log("rendered");
+  useEffect(() => {
+    const getRecommendationPlaces = async () => {
+      const data = await getUserID(20);
+      setRecommendationPlaces([...data]);
+    };
+    getRecommendationPlaces();
+  }, []);
+  console.log("rendered");
   return (
     <SafeAreaView style={{ flex: 1, backgroundColor: COLORS.white }}>
       <StatusBar translucent={false} backgroundColor={COLORS.primary} />
@@ -148,7 +145,7 @@ const HomeScreen = ({ navigation }) => {
             navigation.navigate("LoginScreen");
           }}
         />
-        <Icon name="notifications-none" size={28} color={COLORS.white} />   
+        <Icon name="notifications-none" size={28} color={COLORS.white} />
       </View>
       <ScrollView showsVerticalScrollIndicator={false}>
         <View
@@ -162,18 +159,24 @@ const HomeScreen = ({ navigation }) => {
           <View>
             <Text style={style.headerTitle}>Explore the</Text>
             <Text style={style.headerTitle}>beautiful places</Text>
-            <View style={style.inputContainer}>
-              <TextInput
-                placeholder="Search place"
-                style={{ color: COLORS.black, flex: 1 }}
-                value={searchText}
-                onChangeText={setSearchText}
-              />
-
-              <TouchableOpacity onPress={handleSearch}>
+            <TouchableOpacity
+              activeOpacity={1}
+              onPress={() => {
+                navigation.navigate("SearchScreen");
+              }}
+            >
+              <View style={style.inputContainer}>
+                <TextInput
+                  editable={false}
+                  placeholder="Search place"
+                  style={{ color: COLORS.black, flex: 1 }}
+                  value={searchText}
+                  onChangeText={setSearchText}
+                />
                 <Icon name="search" size={28} />
-              </TouchableOpacity>
-            </View>
+              </View>
+            </TouchableOpacity>
+
             {recommendations.length !== 0 && (
               <View style={style.searchDropdown}>
                 <View style={{}}>

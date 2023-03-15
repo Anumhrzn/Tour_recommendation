@@ -1,5 +1,12 @@
 import react from "react";
-import { View, Text, StyleSheet, TouchableOpacity, Button } from "react-native";
+import {
+  View,
+  Text,
+  StyleSheet,
+  TouchableOpacity,
+  Button,
+  ActivityIndicator,
+} from "react-native";
 import { Marker, Polyline } from "react-native-maps";
 import MapView from "react-native-maps";
 
@@ -51,34 +58,35 @@ const NavigationScreen = ({ navigation, route }) => {
 
   return (
     <View style={styles.container}>
-      <MapView
-        initialRegion={{
-          latitude: 27.7172,
-          longitude: 85.324,
-          latitudeDelta: 0.0922,
-          longitudeDelta: 0.0421,
-        }}
-        style={styles.map}
-        region={mapRegion}
-      >
-        {/* <Marker coordinate={mapRegion} title="Your current location"></Marker> */}
-        <Marker
-          coordinate={{
-            latitude: 27.7223208,
-            longitude: 85.2724667,
+      {destination ? (
+        <MapView
+          initialRegion={{
+            latitude: 27.7172,
+            longitude: 85.324,
+            latitudeDelta: 0.0922,
+            longitudeDelta: 0.0421,
           }}
-        />
-        <Marker coordinate={place.coordinates} />
-        {destination && (
+          style={styles.map}
+          region={mapRegion}
+        >
+          {/* <Marker coordinate={mapRegion} title="Your current location"></Marker> */}
+          <Marker
+            coordinate={{
+              latitude: 27.6756,
+              longitude: 85.3459,
+            }}
+          />
+          <Marker coordinate={place.coordinates} />
           <Polyline
             coordinates={destination.path}
             strokeColor="#4a80f5" // fallback for when `strokeColors` is not supported by the map-provider
             strokeColors={["#7F0000"]}
             strokeWidth={6}
           />
-        )}
-      </MapView>
-      <Button title="Get Location" onPress={userLocation}></Button>
+        </MapView>
+      ) : (
+        <ActivityIndicator size={"large"} />
+      )}
     </View>
   );
 };
@@ -89,7 +97,7 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     alignItems: "center",
-    // position: "relative",
+    justifyContent: "center",
   },
   inputContainer: {
     height: 50,

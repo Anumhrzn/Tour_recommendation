@@ -9,12 +9,13 @@ import {
 import { useState } from "react";
 import COLORS from "../../const/colors";
 import { TouchableOpacity } from "react-native-gesture-handler";
-import QuestionsScreen from "./QuestionsScreen";
+// import QuestionsScreen from "./QuestionsScreen";
 import { addUser } from "../../services/Queries";
 
 const LoginScreen = ({ navigation }) => {
   const [isLoading, setLoading] = useState(false);
   const [username, setUsername] = useState("");
+  const [password, setPassword] = useState('');
   // const [userid, setUserid] = useState("");
   const [errors, setErrors] = useState([]);
 
@@ -46,12 +47,10 @@ const LoginScreen = ({ navigation }) => {
     }
     setUsername(val);
   };
-  // const handleRatingChange = (rating) => {
-  //   setUserRating(rating);
-  // };
 
   return (
     <View style={styles.container}>
+      <Text style={styles.title}>Login</Text>
       <View style={styles.inputContainer}>
         <TextInput
           placeholder="Enter your username"
@@ -60,25 +59,16 @@ const LoginScreen = ({ navigation }) => {
           onChangeText={handleChange}
         />
       </View>
-      {/* <View style={styles.inputContainer}>
-        <Text style={{ color: COLORS.black, flex: 1 }}>User rating:</Text>
-        <View style={{ flexDirection: "row", alignItems: "center" }}>
-          {[1, 2, 3, 4, 5].map((i) => (
-            <TouchableOpacity key={i} onPress={() => handleRatingChange(i)}>
-              <Text style={{ color: i <= userRating ? COLORS.yellow : COLORS.grey }}>★</Text>
-            </TouchableOpacity>
-          ))}
-        </View>
-      </View> */}
-
-      {/* <View style={styles.inputContainer}>
-        <TextInput
-          placeholder="Enter your userid"
-          style={{ color: COLORS.black, flex: 1 }}
-          value={userid}
-          onChangeText={(userid) => setUserid(userid)}
-        />
-      </View> */}
+      
+      <View style={styles.inputContainer}>
+      <TextInput
+        style={styles.input}
+        placeholder="Password"
+        secureTextEntry={true}
+        value={password}
+        onChangeText={setPassword}
+      />
+      </View>
       {errors.map((e) => (
         <Text key={e} style={{ color: COLORS.red }}>
           {e}
@@ -95,37 +85,74 @@ const LoginScreen = ({ navigation }) => {
           </View>
         )}
       </TouchableOpacity>
+      <View>
+        <Text style={styles.qtext}>
+          Don't have an account yet?
+        </Text>
+      </View>
+      <TouchableOpacity onPress={() => {
+            navigation.navigate("RegisterScreen");
+          }}>
+         <View style={styles.button}>
+            <Text style={{ fontWeight: "bold", color: COLORS.white }}>
+              Register
+            </Text>
+          </View>  
+      </TouchableOpacity>
     </View>
   );
 };
 
 const styles = StyleSheet.create({
   container: {
+    marginTop:60,
     flexDirection: "column",
     width: "100%",
     height: "100%",
     alignItems: "center",
     justifyContent: "center",
   },
+  title: {
+    fontSize: 24,
+    fontWeight: 'bold',
+    marginBottom: 20,
+  },
   button: {
     backgroundColor: COLORS.primary,
-    borderRadius: 12,
-    padding: 12,
-    marginTop: 20,
+    borderRadius: 10,
+    paddingHorizontal: 20,
+    paddingVertical: 10,
+    marginTop: 10,
+    alignItems: "center"
   },
   inputContainer: {
     height: 50,
     width: "90%",
     backgroundColor: COLORS.white,
     borderRadius: 10,
-    top: 50,
+    top: 0,
     flexDirection: "row",
-    justifyContent: "space-between",
+    justifyContent: "flex-start",
     paddingHorizontal: 20,
     alignItems: "center",
-    marginBottom: 70,
+    marginBottom: 20,
     elevation: 12,
   },
+  text: {
+    marginTop: 10,
+    marginBottom: 5,
+    fontWeight: 'bold',
+    fontSize: 16,
+    alignItems: "baseline"
+  },
+  qtext: {
+    marginTop: 150,
+    marginBottom: 5,
+    fontWeight: 'bold',
+    fontSize: 16,
+    alignItems: "baseline"
+  }
+
 });
 
 export default LoginScreen;
