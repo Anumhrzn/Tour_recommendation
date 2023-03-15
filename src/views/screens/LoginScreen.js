@@ -6,16 +6,18 @@ import {
   Button,
   ToastAndroid,
 } from "react-native";
+import Icon from "react-native-vector-icons/Ionicons";
 import { useState } from "react";
 import COLORS from "../../const/colors";
 import { TouchableOpacity } from "react-native-gesture-handler";
 // import QuestionsScreen from "./QuestionsScreen";
 import { addUser } from "../../services/Queries";
+import Pressable from "react-native/Libraries/Components/Pressable/Pressable";
 
 const LoginScreen = ({ navigation }) => {
   const [isLoading, setLoading] = useState(false);
   const [username, setUsername] = useState("");
-  const [password, setPassword] = useState('');
+  const [password, setPassword] = useState("");
   // const [userid, setUserid] = useState("");
   const [errors, setErrors] = useState([]);
 
@@ -49,110 +51,152 @@ const LoginScreen = ({ navigation }) => {
   };
 
   return (
-    <View style={styles.container}>
-      <Text style={styles.title}>Login</Text>
-      <View style={styles.inputContainer}>
+    <View style={styles.maincontainer}>
+      <Text style={styles.mainheader}>Welcome Back!</Text>
+      <View>
+        <Text style={styles.text}>Username</Text>
         <TextInput
+          style={styles.inputContainer}
           placeholder="Enter your username"
-          style={{ color: COLORS.black, flex: 1 }}
           value={username}
-          onChangeText={handleChange}
         />
       </View>
-      
-      <View style={styles.inputContainer}>
-      <TextInput
-        style={styles.input}
-        placeholder="Password"
-        secureTextEntry={true}
-        value={password}
-        onChangeText={setPassword}
-      />
-      </View>
-      {errors.map((e) => (
-        <Text key={e} style={{ color: COLORS.red }}>
-          {e}
-        </Text>
-      ))}
-      <TouchableOpacity onPress={handleLogin}>
-        {isLoading ? (
-          <Text>Loading..</Text>
-        ) : (
+
+      <View>
+        <Text style={styles.text}>Password</Text>
+        <TextInput
+          style={styles.inputContainer}
+          placeholder="Enter your password"
+          secureTextEntry={true} //right={<TextInput.Icon name="eye-off-outline"/>}
+          // value={password}
+        />
+        <TouchableOpacity
+          activeOpacity={0.8}
+          onPress={() => navigation.navigate("HomeScreen")}
+        >
           <View style={styles.button}>
             <Text style={{ fontWeight: "bold", color: COLORS.white }}>
               Login
             </Text>
           </View>
-        )}
-      </TouchableOpacity>
+        </TouchableOpacity>
+      </View>
+
       <View>
-        <Text style={styles.qtext}>
-          Don't have an account yet?
+        <Text
+          onPress={() => navigation.navigate("RegisterScreen")}
+          style={styles.ptext}
+        >
+          Forgot password?
         </Text>
       </View>
-      <TouchableOpacity onPress={() => {
-            navigation.navigate("RegisterScreen");
-          }}>
-         <View style={styles.button}>
-            <Text style={{ fontWeight: "bold", color: COLORS.white }}>
-              Register
-            </Text>
-          </View>  
-      </TouchableOpacity>
+
+      <View>
+        <Text style={styles.qtext}>Don't have an account yet?</Text>
+        <Pressable onPress={() => navigation.navigate("RegisterScreen")}>
+          <Text style={styles.navtext}>Register</Text>
+        </Pressable>
+        {/* <TouchableOpacity 
+        activeOpacity={0.8}
+        onPress={() => navigation.navigate("RegisterScreen")}
+        > 
+        <View style={styles.button}>
+          <Text style={{ fontWeight: "bold", color: COLORS.white }}>
+            Register
+          </Text>
+        </View> 
+      </TouchableOpacity> */}
+      </View>
+
+      {/* {errors.map((e) => (
+        <Text key={e} style={{ color: COLORS.red }}>
+          {e}
+        </Text>
+      ))} */}
+      {/* <TouchableOpacity onPress={handleLogin}>
+        {isLoading ? (
+          <Text>Loading..</Text>
+        ) : ( 
+        onPress={() => navigation.navigate("RegisterScreen")}
+        > 
+        <View style={styles.button}>
+          <Text style={{ fontWeight: "bold", color: COLORS.white }}>
+            Login
+          </Text>
+        </View>
+      </TouchableOpacity> */}
     </View>
   );
 };
 
 const styles = StyleSheet.create({
-  container: {
-    marginTop:60,
+  maincontainer: {
     flexDirection: "column",
     width: "100%",
     height: "100%",
-    alignItems: "center",
+    // alignItems: "center",
     justifyContent: "center",
   },
-  title: {
-    fontSize: 24,
-    fontWeight: 'bold',
-    marginBottom: 20,
+  mainheader: {
+    height: "10%",
+    fontSize: 30,
+    fontWeight: "bold",
+    color: COLORS.primary,
+    marginHorizontal: 100,
   },
   button: {
+    width: "50%",
     backgroundColor: COLORS.primary,
     borderRadius: 10,
-    paddingHorizontal: 20,
-    paddingVertical: 10,
+    padding: 10,
     marginTop: 10,
-    alignItems: "center"
+    alignItems: "center",
+    marginHorizontal: 100,
   },
   inputContainer: {
     height: 50,
-    width: "90%",
     backgroundColor: COLORS.white,
     borderRadius: 10,
-    top: 0,
     flexDirection: "row",
     justifyContent: "flex-start",
     paddingHorizontal: 20,
     alignItems: "center",
+    marginHorizontal: 30,
     marginBottom: 20,
-    elevation: 12,
+    elevation: 5,
   },
   text: {
     marginTop: 10,
     marginBottom: 5,
-    fontWeight: 'bold',
+    marginHorizontal: 30,
+    fontWeight: "bold",
     fontSize: 16,
-    alignItems: "baseline"
+    alignItems: "baseline",
+  },
+  ptext: {
+    marginTop: 10,
+    marginBottom: 5,
+    marginHorizontal: 140,
+    fontWeight: "bold",
+    fontSize: 16,
+    alignItems: "baseline",
   },
   qtext: {
     marginTop: 150,
-    marginBottom: 5,
-    fontWeight: 'bold',
+    fontWeight: "bold",
     fontSize: 16,
-    alignItems: "baseline"
-  }
-
+    alignItems: "center",
+    flexDirection: "row",
+    marginHorizontal: 110,
+  },
+  navtext: {
+    color: COLORS.primary,
+    fontWeight: "bold",
+    alignItems: "center",
+    fontSize: 14,
+    marginHorizontal: 170,
+    // marginTop: 20,
+  },
 });
 
 export default LoginScreen;
