@@ -7,13 +7,34 @@ console.log({ apiUrl });
 //   .then(data => console.log(data))
 //   .catch(error => console.error(error));
 
-export function addUser(name) {
+export function addUser(name, password) {
   return fetch(`${apiUrl}/users/addUser`, {
     body: JSON.stringify({
-      user_name: user_name,
-      password: password,
-      id: id,
       name: name,
+      password: password,
+    }),
+    headers: {
+      Accept: "application/json",
+      "Content-Type": "application/json",
+    },
+    method: "POST",
+  })
+    .catch((e) => {
+      throw e;
+    })
+    .then((res) => {
+      return res.json().then((val) => {
+        console.log(val);
+        return val;
+      });
+    });
+}
+
+export function loginUser(name, password) {
+  return fetch(`${apiUrl}/users/login`, {
+    body: JSON.stringify({
+      name: name,
+      password: password,
     }),
     headers: {
       Accept: "application/json",

@@ -11,7 +11,7 @@ import { useState } from "react";
 import COLORS from "../../const/colors";
 import { TouchableOpacity } from "react-native-gesture-handler";
 // import QuestionsScreen from "./QuestionsScreen";
-import { addUser } from "../../services/Queries";
+import { loginUser } from "../../services/Queries";
 import Pressable from "react-native/Libraries/Components/Pressable/Pressable";
 
 const LoginScreen = ({ navigation }) => {
@@ -23,16 +23,20 @@ const LoginScreen = ({ navigation }) => {
 
   const handleLogin = () => {
     if (username === "") {
-      setErrors(["Username cannot be empty"]);
+      setErrors(["Username and password cannot be empty"]);
     } else {
       setLoading(true);
-      addUser(username)
+      loginUser(username, password)
         .then((val) => {
           console.log(val);
           if (val) {
-            ToastAndroid.show("User already exists!!", ToastAndroid.SHORT);
+            ToastAndroid.show(
+              "Incorrect username or password!!",
+              ToastAndroid.SHORT
+            );
           } else {
-            navigation.navigate("QuestionsScreen");
+            ToastAndroid.show("Login Successful !!", ToastAndroid.SHORT);
+            navigation.navigate("HomeScreen");
           }
           setLoading(false);
         })
@@ -59,6 +63,7 @@ const LoginScreen = ({ navigation }) => {
           style={styles.inputContainer}
           placeholder="Enter your username"
           value={username}
+          onChangeText={handleChange}
         />
       </View>
 
@@ -67,28 +72,20 @@ const LoginScreen = ({ navigation }) => {
         <TextInput
           style={styles.inputContainer}
           placeholder="Enter your password"
-          secureTextEntry={true} //right={<TextInput.Icon name="eye-off-outline"/>}
+          secureTextEntry={true}
+          value={password}
+          onChangeText={setPassword} //right={<TextInput.Icon name="eye-off-outline"/>}
           // value={password}
         />
-        <TouchableOpacity
-          activeOpacity={0.8}
-          onPress={() => navigation.navigate("HomeScreen")}
-        >
-          <View style={styles.button}>
-            <Text style={{ fontWeight: "bold", color: COLORS.white }}>
-              Login
-            </Text>
-          </View>
-        </TouchableOpacity>
-      </View>
+        {errors.map((e) => (
+          <Text key={e} style={{ color: COLORS.red, marginHorizontal: 55 }}>
+            {e}
+          </Text>
+        ))}
 
-      <View>
-        <Text
-          onPress={() => navigation.navigate("RegisterScreen")}
-          style={styles.ptext}
-        >
-          Forgot password?
-        </Text>
+        <TouchableOpacity style={styles.button} onPress={handleLogin}>
+          <Text style={{ fontWeight: "bold", color: COLORS.white }}>Login</Text>
+        </TouchableOpacity>
       </View>
 
       <View>
@@ -96,23 +93,8 @@ const LoginScreen = ({ navigation }) => {
         <Pressable onPress={() => navigation.navigate("RegisterScreen")}>
           <Text style={styles.navtext}>Register</Text>
         </Pressable>
-        {/* <TouchableOpacity 
-        activeOpacity={0.8}
-        onPress={() => navigation.navigate("RegisterScreen")}
-        > 
-        <View style={styles.button}>
-          <Text style={{ fontWeight: "bold", color: COLORS.white }}>
-            Register
-          </Text>
-        </View> 
-      </TouchableOpacity> */}
       </View>
 
-      {/* {errors.map((e) => (
-        <Text key={e} style={{ color: COLORS.red }}>
-          {e}
-        </Text>
-      ))} */}
       {/* <TouchableOpacity onPress={handleLogin}>
         {isLoading ? (
           <Text>Loading..</Text>
@@ -142,7 +124,8 @@ const styles = StyleSheet.create({
     fontSize: 30,
     fontWeight: "bold",
     color: COLORS.primary,
-    marginHorizontal: 100,
+    marginHorizontal: 70,
+    marginTop: 100,
   },
   button: {
     width: "50%",
@@ -184,17 +167,17 @@ const styles = StyleSheet.create({
   qtext: {
     marginTop: 150,
     fontWeight: "bold",
-    fontSize: 16,
+    fontSize: 14,
     alignItems: "center",
     flexDirection: "row",
-    marginHorizontal: 110,
+    marginHorizontal: 100,
   },
   navtext: {
     color: COLORS.primary,
     fontWeight: "bold",
     alignItems: "center",
     fontSize: 14,
-    marginHorizontal: 170,
+    marginHorizontal: 150,
     // marginTop: 20,
   },
 });

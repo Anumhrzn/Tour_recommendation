@@ -1,74 +1,38 @@
-import React, { useEffect } from "react";
+import React from "react";
 import {
   SafeAreaView,
-  StyleSheet,
-  View,
   StatusBar,
   ScrollView,
+  View,
   Text,
+  StyleSheet,
   TextInput,
-  ImageBackground,
   FlatList,
-  Dimensions,
   TouchableOpacity,
+  ImageBackground,
+  Dimensions,
 } from "react-native";
 import COLORS from "../../const/colors";
+import { useState, useEffect } from "react";
 import Icon from "react-native-vector-icons/MaterialIcons";
-import places from "../../const/places";
-import { useState } from "react";
-import { getRecommendations, getUserID } from "../../services/Queries";
+import { getRecommendations } from "../../services/Queries";
 import AntDesign from "react-native-vector-icons/AntDesign";
+import places from "../../const/places";
+import { combineTransition } from "react-native-reanimated";
 
 const { width } = Dimensions.get("screen");
-const HomeScreen = ({ navigation }) => {
+const TestScreen = ({ navigation }) => {
   const [searchText, setSearchText] = useState("");
-  const [recommendationPlaces, setRecommendationPlaces] = useState([]);
   const [recommendations, setRecommendations] = useState([]);
   const handleSearch = async () => {
     if (searchText !== "") {
       const results = await getRecommendations(searchText);
-      setRecommendations(results);
+       setRecommendations(results);
+      // setRecommendations([...results]);
     }
+    // getRecommendations();
   };
-  const categoryIcons = [
-    <Icon
-      name="flight"
-      size={25}
-      color={COLORS.primary}
-      onPress={() => {
-        navigation.navigate("TestScreen");
-      }}
-    />,
-    <Icon
-      name="beach-access"
-      size={25}
-      color={COLORS.primary}
-      onPress={() => {
-        navigation.navigate("WeatherScreen");
-      }}
-    />,
-    <Icon name="near-me" size={25} color={COLORS.primary} />,
-    <Icon
-      name="place"
-      size={25}
-      color={COLORS.primary}
-      onPress={() => {
-        navigation.navigate("MapScreen");
-      }}
-    />,
-  ];
-  const ListCategories = () => {
-    return (
-      <View style={style.categoryContainer}>
-        {categoryIcons.map((icon, index) => (
-          <View key={index} style={style.iconContainer}>
-            {icon}
-          </View>
-        ))}
-      </View>
-    );
-  };
-
+  const ListCategories = () => {};
   const Card = ({ place }) => {
     return (
       <TouchableOpacity
@@ -90,68 +54,34 @@ const HomeScreen = ({ navigation }) => {
       </TouchableOpacity>
     );
   };
-
   const RecommendedCard = ({ place }) => {
     return (
-      <TouchableOpacity
-        activeOpacity={0.8}
-        onPress={() => navigation.navigate("DetailsScreen", place)}
-      >
-        <ImageBackground
-          style={style.rmCardImage}
-          source={{ uri: place.image }}
+      <ImageBackground style={style.rmCardImage} source={{ uri: place.image }}>
+        <Text
+          style={{
+            color: COLORS.white,
+            fontSize: 22,
+            fontWeight: "bold",
+            marginTop: 10,
+          }}
         >
-          <Text
-            style={{
-              color: COLORS.white,
-              fontSize: 22,
-              fontWeight: "bold",
-              marginTop: 10,
-            }}
-          >
-            {place.name}
-          </Text>
-          <View
-            style={{
-              Flex: 1,
-              justifyContent: "space-between",
-              alignItems: "flex-end",
-            }}
-          ></View>
-        </ImageBackground>
-      </TouchableOpacity>
+          {place.name}
+        </Text>
+        <View
+          style={{
+            Flex: 1,
+            justifyContent: "space-between",
+            alignItems: "flex-end",
+          }}
+        ></View>
+      </ImageBackground>
     );
   };
-
-  useEffect(() => {
-    const getRecommendationPlaces = async () => {
-      const data = await getUserID(20);
-      setRecommendationPlaces([...data]);
-    };
-    getRecommendationPlaces();
-  }, []);
-  console.log("rendered");
   return (
     <SafeAreaView style={{ flex: 1, backgroundColor: COLORS.white }}>
       <StatusBar translucent={false} backgroundColor={COLORS.primary} />
       <View style={style.header}>
         <Icon name="sort" size={28} color={COLORS.white} />
-        <Icon
-          name="person-pin"
-          size={28}
-          color={COLORS.white}
-          onPress={() => {
-            navigation.navigate("UserprofileScreen");
-          }}
-        />
-        <Icon
-          name="login"
-          size={28}
-          color={COLORS.white}
-          onPress={() => {
-            navigation.navigate("LoginScreen");
-          }}
-        />
         <Icon name="notifications-none" size={28} color={COLORS.white} />
       </View>
       <ScrollView showsVerticalScrollIndicator={false}>
@@ -159,31 +89,22 @@ const HomeScreen = ({ navigation }) => {
           style={{
             zIndex: 10,
             backgroundColor: COLORS.primary,
-            height: 120,
+            height: 80,
             paddingHorizontal: 20,
           }}
         >
           <View>
-            <Text style={style.headerTitle}>Explore the</Text>
-            <Text style={style.headerTitle}>beautiful places</Text>
-            <TouchableOpacity
-              activeOpacity={1}
-              onPress={() => {
-                navigation.navigate("SearchScreen");
-              }}
-            >
-              <View style={style.inputContainer}>
-                <TextInput
-                  editable={false}
-                  placeholder="Search place"
-                  style={{ color: COLORS.black, flex: 1 }}
-                  value={searchText}
-                  onChangeText={setSearchText}
-                />
+            <View style={style.inputContainer}>
+              <TextInput
+                placeholder="Search place"
+                style={{ color: COLORS.black, flex: 1 }}
+                value={searchText}
+                onChangeText={setSearchText}
+              />
+              <TouchableOpacity onPress={handleSearch}>
                 <Icon name="search" size={28} />
-              </View>
-            </TouchableOpacity>
-
+              </TouchableOpacity>
+            </View>
             {recommendations.length !== 0 && (
               <View style={style.searchDropdown}>
                 <View style={{}}>
@@ -205,22 +126,15 @@ const HomeScreen = ({ navigation }) => {
           </View>
         </View>
         <ListCategories />
-        <Text style={style.sectionTitle}>Popular Attractions</Text>
         <View>
-          <FlatList
-            contentContainerStyle={{ paddingLeft: 20 }}
-            horizontal
-            showsHorizontalScrollIndicator={false}
-            data={places}
-            renderItem={({ item }) => <Card place={item} />}
-          />
+          <Text style={style.sectionTitle}>Place that you searched for</Text>
           <Text style={style.sectionTitle}>Recommended Places For You</Text>
           <FlatList
             snapToInterval={width - 20}
             contentContainerStyle={{ paddingLeft: 20, paddingBottom: 20 }}
             showsHorizontalScrollIndicator={false}
             horizontal
-            data={recommendationPlaces}
+            data={recommendations}
             renderItem={({ item }) => <RecommendedCard place={item} />}
           />
         </View>
@@ -244,6 +158,7 @@ const style = StyleSheet.create({
   },
   inputContainer: {
     height: 60,
+    marginTop: -30,
     width: "100%",
     backgroundColor: COLORS.white,
     borderRadius: 10,
@@ -287,20 +202,12 @@ const style = StyleSheet.create({
     borderRadius: 10,
     zIndex: 0,
   },
-  rmCardImage: {
-    width: width - 40,
-    height: 200,
-    marginRight: 20,
-    borderRadius: 10,
-    overflow: "hidden",
-    padding: 10,
-  },
   searchDropdown: {
     width: "100%",
     backgroundColor: COLORS.lightGray,
     borderRadius: 4,
     position: "absolute",
-    top: 170,
+    top: 80,
     padding: 20,
     elevation: 12,
     borderWidth: 0.2,
@@ -310,4 +217,5 @@ const style = StyleSheet.create({
     justifyContent: "space-between",
   },
 });
-export default HomeScreen;
+
+export default TestScreen;

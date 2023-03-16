@@ -7,11 +7,11 @@ import {
   View,
   ToastAndroid,
 } from "react-native";
-import loginScreen from "./LoginScreen";
+
 import { addUser } from "../../services/Queries";
 import COLORS from "../../const/colors";
 
-export default function RegisterScreen() {
+const RegisterScreen = ({ navigation }) => {
   const [username, setUsername] = useState("");
   const [isLoading, setLoading] = useState(false);
   const [email, setEmail] = useState("");
@@ -23,13 +23,14 @@ export default function RegisterScreen() {
       setErrors(["Username cannot be empty"]);
     } else {
       setLoading(true);
-      addUser(username)
+      addUser(username, password)
         .then((val) => {
           console.log(val);
           if (val) {
-            ToastAndroid.show("User already exists!!", ToastAndroid.SHORT);
+            ToastAndroid.show("User already exists !!", ToastAndroid.SHORT);
           } else {
             navigation.navigate("LoginScreen");
+            ToastAndroid.show("Successfully registered !!", ToastAndroid.SHORT);
           }
           setLoading(false);
         })
@@ -98,7 +99,7 @@ export default function RegisterScreen() {
       </TouchableOpacity>
     </View>
   );
-}
+};
 
 const styles = StyleSheet.create({
   container: {
@@ -132,3 +133,5 @@ const styles = StyleSheet.create({
     fontWeight: "bold",
   },
 });
+
+export default RegisterScreen;
