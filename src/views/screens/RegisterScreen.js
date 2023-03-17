@@ -73,7 +73,7 @@ const RegisterScreen = ({ navigation }) => {
 
   return (
     <View style={styles.container}>
-      <Text style={styles.title}>Register</Text>
+      <Text style={styles.mainheader}>Register</Text>
       <TextInput
         style={styles.input}
         placeholder="Username"
@@ -91,11 +91,18 @@ const RegisterScreen = ({ navigation }) => {
         style={styles.input}
         placeholder="Password"
         secureTextEntry={true}
+        // value={password}
+        // onChangeText={setPassword}
+      />
+      <TextInput
+        style={styles.input}
+        placeholder="Confirm Password"
+        secureTextEntry={true}
         value={password}
         onChangeText={setPassword}
       />
       <TouchableOpacity style={styles.button} onPress={handleRegister}>
-        <Text style={styles.buttonText}>Register</Text>
+          <Text style={{ fontWeight: "bold", color: COLORS.white }}>Register</Text>
       </TouchableOpacity>
     </View>
   );
@@ -108,10 +115,13 @@ const styles = StyleSheet.create({
     justifyContent: "center",
     backgroundColor: "#fff",
   },
-  title: {
-    fontSize: 24,
+  mainheader: {
+    height: "10%",
+    fontSize: 30,
     fontWeight: "bold",
-    marginBottom: 20,
+    color: COLORS.primary,
+    marginHorizontal: 100,
+    marginTop: 100,
   },
   input: {
     width: "80%",
@@ -123,9 +133,13 @@ const styles = StyleSheet.create({
     borderRadius: 5,
   },
   button: {
+    width: "50%",
     backgroundColor: COLORS.primary,
+    borderRadius: 10,
     padding: 10,
-    borderRadius: 5,
+    marginTop: 10,
+    alignItems: "center",
+    marginHorizontal: 100,
   },
   buttonText: {
     color: "#fff",
