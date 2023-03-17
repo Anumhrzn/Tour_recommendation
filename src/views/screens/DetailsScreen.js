@@ -8,6 +8,8 @@ import {
   Text,
   TouchableOpacity,
   ScrollView,
+  ToastAndroid,
+  ActivityIndicator,
 } from "react-native";
 import { useState } from "react";
 import Icon from "react-native-vector-icons/MaterialIcons";
@@ -19,7 +21,7 @@ import { TextInput } from "react-native-gesture-handler";
 const DetailsScreen = ({ navigation, route }) => {
   const place = route.params;
   const [isLoading, setLoading] = useState(false);
-  const [rating, setRating] = useState(5);
+  const [rating, setRating] = useState(0);
   const [description, setDescription] = useState("");
   const [errors, setErrors] = useState([]);
 
@@ -36,14 +38,7 @@ const DetailsScreen = ({ navigation, route }) => {
     };
     addUserRating(userRating)
       .then((val) => {
-        console.log(val);
-        if (val) {
-          console.log(val);
-          debugger;
-          ToastAndroid.show("Successfully added rating", ToastAndroid.SHORT);
-        } else {
-          ToastAndroid.show("Failed to add rating", ToastAndroid.SHORT);
-        }
+        ToastAndroid.show("Successfully added rating", ToastAndroid.SHORT);
         setLoading(false);
       })
       .catch((e) => {
@@ -61,7 +56,7 @@ const DetailsScreen = ({ navigation, route }) => {
     <SafeAreaView style={{ flex: 1, backgroundColor: COLORS.white }}>
       <ScrollView>
         <StatusBar translucent backgroundColor="rgba(0,0,0,0)" />
-        <ImageBackground style={{ height: 400 }} source={place.image}>
+        <ImageBackground style={{ height: 450 }} source={place.image}>
           <View style={style.header}>
             <Icon
               name="arrow-back-ios"
@@ -78,7 +73,7 @@ const DetailsScreen = ({ navigation, route }) => {
               color={COLORS.primary}
               size={30}
               onPress={() => {
-                navigation.navigate("NavigationScreen");
+                navigation.navigate("NavigationScreen", place);
               }}
             />
           </View>
@@ -111,6 +106,7 @@ const DetailsScreen = ({ navigation, route }) => {
           <Text style={{ marginTop: 10, lineHeight: 22 }}>{place.details}</Text>
 
           <TextInput
+            placeholder="Give reviews"
             style={style.input}
             multiline
             onChangeText={(descriptionText) => setDescription(descriptionText)}
@@ -124,11 +120,15 @@ const DetailsScreen = ({ navigation, route }) => {
               size={35}
             />
           </View>
-          <TouchableOpacity style={style.submitButton} onPress={handleSubmit}>
-            <Text style={style.submitText}>
-              {isLoading ? "loading.." : "SUMBIT"}
-            </Text>
-          </TouchableOpacity>
+          {isLoading ? (
+            <ActivityIndicator style={style.submitButton} />
+          ) : (
+            <TouchableOpacity style={style.submitButton} onPress={handleSubmit}>
+              <Text style={style.submitText}>
+                {isLoading ? "loading.." : "SUMBIT"}
+              </Text>
+            </TouchableOpacity>
+          )}
         </View>
       </ScrollView>
     </SafeAreaView>

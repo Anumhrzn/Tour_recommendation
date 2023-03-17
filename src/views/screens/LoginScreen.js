@@ -10,27 +10,33 @@ import Icon from "react-native-vector-icons/Ionicons";
 import { useState } from "react";
 import COLORS from "../../const/colors";
 import { TouchableOpacity } from "react-native-gesture-handler";
-import { addUser } from "../../services/Queries";
+// import QuestionsScreen from "./QuestionsScreen";
+import { loginUser } from "../../services/Queries";
 import Pressable from "react-native/Libraries/Components/Pressable/Pressable";
 
 const LoginScreen = ({ navigation }) => {
   const [isLoading, setLoading] = useState(false);
   const [username, setUsername] = useState("");
+  const [password, setPassword] = useState("");
   // const [userid, setUserid] = useState("");
   const [errors, setErrors] = useState([]);
 
   const handleLogin = () => {
     if (username === "") {
-      setErrors(["Username cannot be empty"]);
+      setErrors(["Username and password cannot be empty"]);
     } else {
       setLoading(true);
-      addUser(username)
+      loginUser(username, password)
         .then((val) => {
           console.log(val);
           if (val) {
-            ToastAndroid.show("User already exists!!", ToastAndroid.SHORT);
+            ToastAndroid.show(
+              "Incorrect username or password!!",
+              ToastAndroid.SHORT
+            );
           } else {
-            navigation.navigate("QuestionsScreen");
+            ToastAndroid.show("Login Successful !!", ToastAndroid.SHORT);
+            navigation.navigate("HomeScreen");
           }
           setLoading(false);
         })
@@ -47,75 +53,48 @@ const LoginScreen = ({ navigation }) => {
     }
     setUsername(val);
   };
-  // const handleRatingChange = (rating) => {
-  //   setUserRating(rating);
-  // };
 
   return (
     <View style={styles.maincontainer}>
       <Text style={styles.mainheader}>Welcome Back!</Text>
       <View>
-        <Text style={styles.text}>
-          Username
-        </Text>
-        <TextInput 
+        <Text style={styles.text}>Username</Text>
+        <TextInput
           style={styles.inputContainer}
-          placeholder= "Enter your username"
+          placeholder="Enter your username"
           value={username}
+          onChangeText={handleChange}
         />
       </View>
 
       <View>
-        <Text style={styles.text}>
-          Password
-        </Text>
-        <TextInput 
+        <Text style={styles.text}>Password</Text>
+        <TextInput
           style={styles.inputContainer}
-          placeholder= "Enter your password"
-          secureTextEntry={true} //right={<TextInput.Icon name="eye-off-outline"/>}
+          placeholder="Enter your password"
+          secureTextEntry={true}
+          value={password}
+          onChangeText={setPassword} //right={<TextInput.Icon name="eye-off-outline"/>}
           // value={password}
         />
-        <TouchableOpacity 
-        activeOpacity={0.8}
-        onPress={() => navigation.navigate("HomeScreen")}
-        > 
-        <View style={styles.button}>
-          <Text style={{ fontWeight: "bold", color: COLORS.white }}>
-            Login
+        {errors.map((e) => (
+          <Text key={e} style={{ color: COLORS.red, marginHorizontal: 55 }}>
+            {e}
           </Text>
-        </View>
-      </TouchableOpacity>
+        ))}
+
+        <TouchableOpacity style={styles.button} onPress={handleLogin}>
+          <Text style={{ fontWeight: "bold", color: COLORS.white }}>Login</Text>
+        </TouchableOpacity>
       </View>
 
       <View>
-      <Text  onPress={() => navigation.navigate("RegisterScreen")}
-        style={styles.ptext}>Forgot password?</Text>
-      </View>
-
-      <View>
-        <Text style={styles.qtext}>Don't have an account yet?
-        </Text>
+        <Text style={styles.qtext}>Don't have an account yet?</Text>
         <Pressable onPress={() => navigation.navigate("RegisterScreen")}>
-            <Text style={styles.navtext}>Register</Text>
-          </Pressable>
-        {/* <TouchableOpacity 
-        activeOpacity={0.8}
-        onPress={() => navigation.navigate("RegisterScreen")}
-        > 
-        <View style={styles.button}>
-          <Text style={{ fontWeight: "bold", color: COLORS.white }}>
-            Register
-          </Text>
-        </View> 
-      </TouchableOpacity> */}
+          <Text style={styles.navtext}>Register</Text>
+        </Pressable>
       </View>
 
-      
-      {/* {errors.map((e) => (
-        <Text key={e} style={{ color: COLORS.red }}>
-          {e}
-        </Text>
-      ))} */}
       {/* <TouchableOpacity onPress={handleLogin}>
         {isLoading ? (
           <Text>Loading..</Text>
@@ -145,7 +124,8 @@ const styles = StyleSheet.create({
     fontSize: 30,
     fontWeight: "bold",
     color: COLORS.primary,
-    marginHorizontal: 100,
+    marginHorizontal: 70,
+    marginTop: 100,
   },
   button: {
     width: "50%",
@@ -155,15 +135,13 @@ const styles = StyleSheet.create({
     marginTop: 10,
     alignItems: "center",
     marginHorizontal: 100,
-
-    
   },
   inputContainer: {
     height: 50,
     backgroundColor: COLORS.white,
     borderRadius: 10,
     flexDirection: "row",
-    justifyContent: "space-between",
+    justifyContent: "flex-start",
     paddingHorizontal: 20,
     alignItems: "center",
     marginHorizontal: 30,
@@ -174,35 +152,34 @@ const styles = StyleSheet.create({
     marginTop: 10,
     marginBottom: 5,
     marginHorizontal: 30,
-    fontWeight: 'bold',
+    fontWeight: "bold",
     fontSize: 16,
-    alignItems: "baseline"
+    alignItems: "baseline",
   },
   ptext: {
     marginTop: 10,
     marginBottom: 5,
     marginHorizontal: 140,
-    fontWeight: 'bold',
+    fontWeight: "bold",
     fontSize: 16,
-    alignItems: "baseline"
+    alignItems: "baseline",
   },
   qtext: {
     marginTop: 150,
-    fontWeight: 'bold',
-    fontSize: 16,
+    fontWeight: "bold",
+    fontSize: 14,
     alignItems: "center",
     flexDirection: "row",
-    marginHorizontal: 110,
+    marginHorizontal: 100,
   },
   navtext: {
     color: COLORS.primary,
-    fontWeight: 'bold',
+    fontWeight: "bold",
     alignItems: "center",
     fontSize: 14,
-    marginHorizontal: 170,
+    marginHorizontal: 150,
     // marginTop: 20,
   },
-
 });
 
 export default LoginScreen;

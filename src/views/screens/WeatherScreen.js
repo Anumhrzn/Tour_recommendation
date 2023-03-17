@@ -67,76 +67,75 @@ const WeatherScreen = () => {
 
   return (
     <SafeAreaView style={styles.container}>
-      {/* <ImageBackground
+      <ImageBackground
         style={styles.container}
         source={require("../../assets/weather.png")}
-      > */}
-        <ScrollView
-          refreshControl={
-            <RefreshControl
-              refreshing={refreshing}
-              onRefresh={() => loadForecast()}
-            />
-          }
-          // style={{ marginTop: 50 }}
+      >
+      <ScrollView
+        refreshControl={
+          <RefreshControl
+            refreshing={refreshing}
+            onRefresh={() => loadForecast()}
+          />
+        }
+        // style={{ marginTop: 50 }}
+      >
+        <Text style={styles.title}>Current Weather</Text>
+        <Text
+          style={{ alignItems: "center", textAlign: "center", fontSize: 18 }}
         >
-          <Text style={styles.title}>Current Weather</Text>
-          <Text
-            style={{ alignItems: "center", textAlign: "center", fontSize: 18 }}
-          >
-            Your Location : {current}
-          </Text>
-          <View style={styles.main}>
-            <View style={styles.current}>
-              <Image
-                style={styles.largeIcon}
-                source={{
-                  uri: `https://openweathermap.org/img/wn/${forecast["weather"][0]["icon"]}@4x.png`,
-                }}
-              ></Image>
-              <Text style={styles.currentTemp}>
-                {Math.round(forecast["main"]["temp"])}ºC
-              </Text>
-            </View>
-
-            <Text style={styles.description}>
-              {forecast["weather"][0]["main"]}
+          Your Location : {current}
+        </Text>
+        <View style={styles.main}>
+          <View style={styles.current}>
+            <Image
+              style={styles.largeIcon}
+              source={{
+                uri: `https://openweathermap.org/img/wn/${forecast["weather"][0]["icon"]}@4x.png`,
+              }}
+            ></Image>
+            <Text style={styles.currentTemp}>
+              {Math.round(forecast["main"]["temp"])}ºC
             </Text>
           </View>
 
-          <View style={styles.extraInfo}>
-            <View style={styles.info}>
-              <Image
-                source={require("../../assets/temp.png")}
-                style={{
-                  width: 40,
-                  height: 40,
-                  marginLeft: 41,
-                }}
-              />
-              <Text style={styles.text}>
-                {forecast["main"]["feels_like"]}ºC
-              </Text>
-              <Text style={styles.text}>Feels like</Text>
-            </View>
-            <View style={styles.info}>
-              <Image
-                source={require("../../assets/humidity.png")}
-                style={{
-                  width: 40,
-                  height: 40,
-                  marginLeft: 45,
-                }}
-              />
-              <Text style={styles.text}>{forecast["main"]["humidity"]}%</Text>
-              <Text style={styles.text}>Humidity</Text>
-            </View>
+          <Text style={styles.description}>
+            {forecast["weather"][0]["main"]}
+          </Text>
+        </View>
+
+        <View style={styles.extraInfo}>
+          <View style={styles.info}>
+            <Image
+              source={require("../../assets/temp.png")}
+              style={{
+                width: 40,
+                height: 40,
+                marginLeft: 41,
+              }}
+            />
+            <Text style={styles.text}>{forecast["main"]["feels_like"]}ºC</Text>
+            <Text style={styles.text}>Feels like</Text>
           </View>
-        </ScrollView>
-      {/* </ImageBackground> */}
+          <View style={styles.info}>
+            <Image
+              source={require("../../assets/humidity.png")}
+              style={{
+                width: 40,
+                height: 40,
+                marginLeft: 45,
+              }}
+            />
+            <Text style={styles.text}>{forecast["main"]["humidity"]}%</Text>
+            <Text style={styles.text}>Humidity</Text>
+          </View>
+        </View>
+      </ScrollView>
+      </ImageBackground>
     </SafeAreaView>
   );
 };
+
 
 export default WeatherScreen;
 
@@ -201,5 +200,10 @@ const styles = StyleSheet.create({
     fontSize: 20,
     color: "#fff",
     textAlign: "center",
+  },
+  loading: {
+    alignContent: "center",
+    alignItems: "center",
+    justifyContent: "center",
   },
 });

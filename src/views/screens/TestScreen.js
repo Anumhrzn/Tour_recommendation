@@ -21,14 +21,16 @@ import places from "../../const/places";
 import { combineTransition } from "react-native-reanimated";
 
 const { width } = Dimensions.get("screen");
-const SearchScreen = ({ navigation }) => {
+const TestScreen = ({ navigation }) => {
   const [searchText, setSearchText] = useState("");
   const [recommendations, setRecommendations] = useState([]);
   const handleSearch = async () => {
     if (searchText !== "") {
       const results = await getRecommendations(searchText);
-      setRecommendations(results);
+       setRecommendations(results);
+      // setRecommendations([...results]);
     }
+    // getRecommendations();
   };
   const ListCategories = () => {};
   const Card = ({ place }) => {
@@ -127,6 +129,14 @@ const SearchScreen = ({ navigation }) => {
         <View>
           <Text style={style.sectionTitle}>Place that you searched for</Text>
           <Text style={style.sectionTitle}>Recommended Places For You</Text>
+          <FlatList
+            snapToInterval={width - 20}
+            contentContainerStyle={{ paddingLeft: 20, paddingBottom: 20 }}
+            showsHorizontalScrollIndicator={false}
+            horizontal
+            data={recommendations}
+            renderItem={({ item }) => <RecommendedCard place={item} />}
+          />
         </View>
       </ScrollView>
     </SafeAreaView>
@@ -208,4 +218,4 @@ const style = StyleSheet.create({
   },
 });
 
-export default SearchScreen;
+export default TestScreen;
