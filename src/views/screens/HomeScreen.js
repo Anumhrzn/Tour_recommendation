@@ -118,22 +118,22 @@ const HomeScreen = ({ navigation }) => {
     );
   };
 
-  // useEffect(() => {
-  //   const getRecommendationPlaces = async () => {
-  //     const data = await getUserID(20);
-  //     //console.log(data);
-  //     setRecommendationPlaces([...data]);
-  //   };
-  //   getRecommendationPlaces();
-  // }, []);
-  // console.log("rendered");
+  useEffect(() => {
+    const getRecommendationPlaces = async () => {
+      const data = await getUserID(20);
+      //console.log(data);
+      setRecommendationPlaces([...data]);
+    };
+    getRecommendationPlaces();
+  }, []);
+  console.log("rendered");
   return (
     <SafeAreaView style={{ flex: 1, backgroundColor: COLORS.white }}>
       <StatusBar translucent={false} backgroundColor={COLORS.primary} />
       <View style={style.header}>
-        <Icon name="sort" size={28} color={COLORS.white} />
+        <Icon name="menu" size={28} color={COLORS.white} />
         <Icon
-          name="person-pin"
+          name="person"
           size={28}
           color={COLORS.white}
           onPress={() => {
@@ -161,7 +161,7 @@ const HomeScreen = ({ navigation }) => {
                 value={searchText}
                 onChangeText={setSearchText}
               />
-
+ 
               <TouchableOpacity onPress={handleSearch}>
                 <Icon name="search" size={28} />
               </TouchableOpacity>
