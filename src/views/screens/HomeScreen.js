@@ -135,9 +135,9 @@ const HomeScreen = ({ navigation }) => {
     <SafeAreaView style={{ flex: 1, backgroundColor: COLORS.white }}>
       <StatusBar translucent={false} backgroundColor={COLORS.primary} />
       <View style={style.header}>
-        <Icon name="sort" size={28} color={COLORS.white} />
+        <Icon name="menu" size={28} color={COLORS.white} />
         <Icon
-          name="person-pin"
+          name="person"
           size={28}
           color={COLORS.white}
           onPress={() => {
