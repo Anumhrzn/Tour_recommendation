@@ -7,50 +7,48 @@ console.log({ apiUrl });
 //   .then(data => console.log(data))
 //   .catch(error => console.error(error));
 
-export function addUser(name, password) {
-  return fetch(`${apiUrl}/users/addUser`, {
-    body: JSON.stringify({
-      name: name,
-      password: password,
-    }),
-    headers: {
-      Accept: "application/json",
-      "Content-Type": "application/json",
-    },
-    method: "POST",
-  })
-    .catch((e) => {
-      throw e;
-    })
-    .then((res) => {
-      return res.json().then((val) => {
-        console.log(val);
-        return val;
-      });
+export async function addUser(name, password) {
+  try {
+    const res = await fetch(`${apiUrl}/users/addUser`, {
+      body: JSON.stringify({
+        name: name,
+        password: password,
+      }),
+      headers: {
+        Accept: "application/json",
+        "Content-Type": "application/json",
+      },
+      method: "POST",
     });
+    if (res.status == 200) {
+      return "Success";
+    }
+    return null;
+  } catch (e) {
+    throw e;
+  }
 }
 
-export function loginUser(name, password) {
-  return fetch(`${apiUrl}/users/login`, {
-    body: JSON.stringify({
-      name: name,
-      password: password,
-    }),
-    headers: {
-      Accept: "application/json",
-      "Content-Type": "application/json",
-    },
-    method: "POST",
-  })
-    .catch((e) => {
-      throw e;
-    })
-    .then((res) => {
-      return res.json().then((val) => {
-        console.log(val);
-        return val;
-      });
+export async function loginUser(name, password) {
+  try {
+    const res = await fetch(`${apiUrl}/users/login`, {
+      body: JSON.stringify({
+        name: name,
+        password: password,
+      }),
+      headers: {
+        Accept: "application/json",
+        "Content-Type": "application/json",
+      },
+      method: "POST",
     });
+    if (res.status == 200) {
+      return "Success";
+    }
+    return null;
+  } catch (e) {
+    throw e;
+  }
 }
 
 export function getRecommendations(title) {
@@ -147,10 +145,19 @@ export function addUserRating(userRating) {
     });
 }
 
-export function getRatings() {
-  return fetch(`${apiUrl}/rating/getRatings`, {
+export function getRatingsByPlaceName(placeName) {
+  return fetch(`${apiUrl}/rating/getPlacesRating?place=${placeName}`, {
     headers: {
       Accept: "application/json",
     },
-  });
+  })
+    .catch((e) => {
+      throw e;
+    })
+    .then((res) => {
+      return res.json().then((val) => {
+        console.log(val);
+        return val;
+      });
+    });
 }

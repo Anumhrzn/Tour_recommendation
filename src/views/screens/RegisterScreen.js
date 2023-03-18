@@ -27,32 +27,10 @@ const RegisterScreen = ({ navigation }) => {
         .then((val) => {
           console.log(val);
           if (val) {
-            ToastAndroid.show("User already exists !!", ToastAndroid.SHORT);
-          } else {
             navigation.navigate("LoginScreen");
             ToastAndroid.show("Successfully registered !!", ToastAndroid.SHORT);
-          }
-          setLoading(false);
-        })
-        .catch((e) => {
-          console.log(e);
-          setLoading(false);
-        });
-    }
-  };
-
-  const handleEmail = () => {
-    if (email === "") {
-      setErrors(["Username cannot be empty"]);
-    } else {
-      setLoading(true);
-      addUser(email)
-        .then((val) => {
-          console.log(val);
-          if (val) {
-            ToastAndroid.show("User already exists!!", ToastAndroid.SHORT);
           } else {
-            navigation.navigate("LoginScreen");
+            ToastAndroid.show("User already exists !!", ToastAndroid.SHORT);
           }
           setLoading(false);
         })
@@ -61,14 +39,6 @@ const RegisterScreen = ({ navigation }) => {
           setLoading(false);
         });
     }
-  };
-
-  const handleChange = (val) => {
-    if (errors.length !== 0) {
-      setErrors([]);
-    }
-    setUsername(val);
-    setEmail(val);
   };
 
   return (
@@ -80,13 +50,7 @@ const RegisterScreen = ({ navigation }) => {
         value={username}
         onChangeText={setUsername}
       />
-      <TextInput
-        style={styles.input}
-        placeholder="Email"
-        keyboardType="email-address"
-        value={email}
-        onChangeText={setEmail}
-      />
+
       <TextInput
         style={styles.input}
         placeholder="Password"

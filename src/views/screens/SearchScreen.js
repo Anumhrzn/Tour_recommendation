@@ -24,10 +24,12 @@ const { width } = Dimensions.get("screen");
 const SearchScreen = ({ navigation }) => {
   const [searchText, setSearchText] = useState("");
   const [recommendations, setRecommendations] = useState([]);
+  const [searchedPlace, setSearchedPlace] = useState(null);
   const handleSearch = async () => {
     if (searchText !== "") {
       const results = await getRecommendations(searchText);
-      setRecommendations(results);
+      setRecommendations(results.recommended_places);
+      setSearchedPlace(results.searched_place);
     }
   };
   const ListCategories = () => {};
@@ -37,7 +39,7 @@ const SearchScreen = ({ navigation }) => {
         activeOpacity={0.8}
         onPress={() => navigation.navigate("DetailsScreen", place)}
       >
-        <ImageBackground style={style.cardImage} source={place.image}>
+        <ImageBackground style={style.cardImage} source={{ uri: place.image }}>
           <Text
             style={{
               color: COLORS.white,
@@ -103,30 +105,32 @@ const SearchScreen = ({ navigation }) => {
                 <Icon name="search" size={28} />
               </TouchableOpacity>
             </View>
-            {recommendations.length !== 0 && (
-              <View style={style.searchDropdown}>
-                <View style={{}}>
-                  {recommendations.map((recommendation) => (
-                    <Text key={recommendation}>{recommendation}</Text>
-                  ))}
-                </View>
-                <View style={style.closeButton}>
-                  <TouchableOpacity onPress={() => setRecommendations([])}>
-                    <AntDesign
-                      name="close"
-                      style={{ color: COLORS.black }}
-                      size={22}
-                    />
-                  </TouchableOpacity>
-                </View>
-              </View>
-            )}
           </View>
         </View>
         <ListCategories />
         <View>
-          <Text style={style.sectionTitle}>Place that you searched for</Text>
-          <Text style={style.sectionTitle}>Recommended Places For You</Text>
+          {searchedPlace && (
+            <View>
+              <Text style={style.sectionTitle}>Place that you searched</Text>
+              <View style={{ paddingLeft: 20 }}>
+                <Card place={searchedPlace} />
+              </View>
+            </View>
+          )}
+          {recommendations.length !== 0 && (
+            <View>
+              <Text style={style.sectionTitle}>Recommended places for you</Text>
+              <FlatList
+                contentContainerStyle={{ paddingLeft: 20 }}
+                horizontal
+                showsHorizontalScrollIndicator={false}
+                data={recommendations}
+                renderItem={({ item }) =>
+                  Object.keys(item).length !== 0 && <Card place={item} />
+                }
+              />
+            </View>
+          )}
         </View>
       </ScrollView>
     </SafeAreaView>

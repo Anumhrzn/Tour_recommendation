@@ -6,6 +6,7 @@ import {
   Button,
   ToastAndroid,
 } from "react-native";
+import user from "../../const/user";
 import Icon from "react-native-vector-icons/Ionicons";
 import { useState } from "react";
 import COLORS from "../../const/colors";
@@ -30,13 +31,14 @@ const LoginScreen = ({ navigation }) => {
         .then((val) => {
           console.log(val);
           if (val) {
+            user.username = username;
+            ToastAndroid.show("Login Successful !!", ToastAndroid.SHORT);
+            navigation.navigate("HomeScreen");
+          } else {
             ToastAndroid.show(
               "Incorrect username or password!!",
               ToastAndroid.SHORT
             );
-          } else {
-            ToastAndroid.show("Login Successful !!", ToastAndroid.SHORT);
-            navigation.navigate("HomeScreen");
           }
           setLoading(false);
         })
@@ -45,6 +47,7 @@ const LoginScreen = ({ navigation }) => {
           setLoading(false);
         });
     }
+    console.log("print here");
   };
 
   const handleChange = (val) => {
