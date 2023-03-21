@@ -15,12 +15,14 @@ import {
 import COLORS from "../../const/colors";
 import Icon from "react-native-vector-icons/MaterialIcons";
 import places from "../../const/places";
+import user from "../../const/user";
 import { useState } from "react";
 import { getRecommendations, getUserID } from "../../services/Queries";
 import AntDesign from "react-native-vector-icons/AntDesign";
 
 const { width } = Dimensions.get("screen");
 const HomeScreen = ({ navigation }) => {
+  const [isRecommendationEmpty, setRecommendationStatus] = useState(false);
   const [searchText, setSearchText] = useState("");
   const [recommendationPlaces, setRecommendationPlaces] = useState([]);
   const [recommendations, setRecommendations] = useState([]);
@@ -124,12 +126,19 @@ const HomeScreen = ({ navigation }) => {
   };
 
   useEffect(() => {
-    const getRecommendationPlaces = async () => {
-      const data = await getUserID(20);
+    const getRecommendationPlaces = async (userid) => {
+      const data = await getUserID(userid);
       setRecommendationPlaces([...data]);
+      if (data.length == 0) {
+        setRecommendationStatus(true);
+      }
     };
-    getRecommendationPlaces();
-  }, []);
+    // if (isRecommendationEmpty) {
+    getRecommendationPlaces(
+      isRecommendationEmpty ? 13 : user.userid ? user.userid : 13
+    );
+    // }
+  }, [isRecommendationEmpty]);
   console.log("rendered");
   return (
     <SafeAreaView style={{ flex: 1, backgroundColor: COLORS.white }}>

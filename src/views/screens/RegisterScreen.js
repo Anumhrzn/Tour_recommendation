@@ -30,7 +30,10 @@ const RegisterScreen = ({ navigation }) => {
             navigation.navigate("LoginScreen");
             ToastAndroid.show("Successfully registered !!", ToastAndroid.SHORT);
           } else {
-            ToastAndroid.show("User already exists !!", ToastAndroid.SHORT);
+            ToastAndroid.show(
+              "User already exists. Enter unique username !!",
+              ToastAndroid.SHORT
+            );
           }
           setLoading(false);
         })
@@ -45,14 +48,14 @@ const RegisterScreen = ({ navigation }) => {
     <View style={styles.container}>
       <Text style={styles.title}>Register</Text>
       <TextInput
-        style={styles.input}
+        style={styles.inputContainer}
         placeholder="Username"
         value={username}
         onChangeText={setUsername}
       />
 
       <TextInput
-        style={styles.input}
+        style={styles.inputContainer}
         placeholder="Password"
         secureTextEntry={true}
         value={password}
@@ -85,6 +88,19 @@ const styles = StyleSheet.create({
     borderColor: "#ccc",
     marginBottom: 20,
     borderRadius: 5,
+  },
+  inputContainer: {
+    height: 50,
+    width: "80%",
+    backgroundColor: COLORS.white,
+    borderRadius: 10,
+    flexDirection: "row",
+    justifyContent: "flex-start",
+    paddingHorizontal: 20,
+    alignItems: "center",
+    marginHorizontal: 30,
+    marginBottom: 20,
+    elevation: 5,
   },
   button: {
     backgroundColor: COLORS.primary,

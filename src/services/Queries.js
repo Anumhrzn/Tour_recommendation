@@ -43,7 +43,8 @@ export async function loginUser(name, password) {
       method: "POST",
     });
     if (res.status == 200) {
-      return "Success";
+      const data = await res.json();
+      return data;
     }
     return null;
   } catch (e) {

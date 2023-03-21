@@ -23,8 +23,8 @@ const NavigationScreen = ({ navigation, route }) => {
   const place = route.params;
   const [destination, setDestination] = useState(null);
   const [mapRegion, setMapRegion] = useState({
-    latitude: place.coordinates.latitude,
-    longitude: place.coordinates.longitude,
+    latitude: place.latitude,
+    longitude: place.longitude,
     latitudeDelta: 0.0922,
     longitudeDelta: 0.0421,
   });
@@ -49,11 +49,13 @@ const NavigationScreen = ({ navigation, route }) => {
 
   useEffect(() => {
     userLocation();
-    getDistance(place.coordinates).then((val) => {
-      if (val) {
-        setDestination(val);
+    getDistance({ latitude: place.latitude, longitude: place.longitude }).then(
+      (val) => {
+        if (val) {
+          setDestination(val);
+        }
       }
-    });
+    );
   }, []);
 
   return (
@@ -76,7 +78,12 @@ const NavigationScreen = ({ navigation, route }) => {
               longitude: 85.3459,
             }}
           />
-          <Marker coordinate={place.coordinates} />
+          <Marker
+            coordinate={{
+              latitude: place.latitude,
+              longitude: place.longitude,
+            }}
+          />
           <Polyline
             coordinates={destination.path}
             strokeColor="#4a80f5" // fallback for when `strokeColors` is not supported by the map-provider
@@ -86,6 +93,22 @@ const NavigationScreen = ({ navigation, route }) => {
         </MapView>
       ) : (
         <ActivityIndicator size={"large"} />
+      )}
+      {destination && (
+        <View
+          style={{
+            position: "absolute",
+            bottom: 100,
+            left: 10,
+            backgroundColor: "#ccc",
+            paddingHorizontal: 10,
+            paddingVertical: 5,
+          }}
+        >
+          <Text style={{ fontSize: 20, fontWeight: "600" }}>
+            {destination.distance.toFixed(2)} km
+          </Text>
+        </View>
       )}
     </View>
   );
