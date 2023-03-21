@@ -11,19 +11,20 @@ import {
   ToastAndroid,
   ActivityIndicator,
 } from "react-native";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import Icon from "react-native-vector-icons/MaterialIcons";
 import COLORS from "../../const/colors";
+import user from "../../const/user";
 import StarRating from "react-native-star-rating-widget";
-import { addUserRating } from "../../services/Queries";
+import { addUserRating, getRatingsByPlaceName } from "../../services/Queries";
 import { TextInput } from "react-native-gesture-handler";
 
 const DetailsScreen = ({ navigation, route }) => {
   const place = route.params;
   const [isLoading, setLoading] = useState(false);
-  const [rating, setRating] = useState(0);
+  const [rating, setRating] = useState(4);
   const [description, setDescription] = useState("");
-  const [errors, setErrors] = useState([]);
+  const [ratings, setRatings] = useState([]);
 
   const handleRating = (rating) => {
     setRating(rating);
@@ -31,13 +32,16 @@ const DetailsScreen = ({ navigation, route }) => {
   const handleSubmit = () => {
     setLoading(true);
     const userRating = {
-      name: "Guest",
+      name: user.username ? user.username : "Guest",
       place_name: place.name,
       rating: rating,
       description: description,
     };
     addUserRating(userRating)
       .then((val) => {
+        const newarray = [userRating].concat(ratings);
+        setRatings(newarray);
+        setDescription("");
         ToastAndroid.show("Successfully added rating", ToastAndroid.SHORT);
         setLoading(false);
       })
@@ -52,20 +56,47 @@ const DetailsScreen = ({ navigation, route }) => {
     // console.log(newRating);
   };
 
+  const getRatings = async () => {
+    let results = await getRatingsByPlaceName(place.name);
+    setRatings(results.reverse());
+    console.log(results);
+  };
+
+  useEffect(() => {
+    getRatings();
+  }, []);
+
   return (
     <SafeAreaView style={{ flex: 1, backgroundColor: COLORS.white }}>
       <ScrollView>
         <StatusBar translucent backgroundColor="rgba(0,0,0,0)" />
-        <ImageBackground style={{ height: 450 }} source={place.image}>
-          <View style={style.header}>
-            <Icon
-              name="arrow-back-ios"
-              size={28}
-              color={COLORS.white}
-              onPress={navigation.goBack}
-            />
-          </View>
-        </ImageBackground>
+        {place.id ? (
+          <ImageBackground style={{ height: 450 }} source={place.image}>
+            <View style={style.header}>
+              <Icon
+                name="arrow-back-ios"
+                size={28}
+                color={COLORS.white}
+                onPress={navigation.goBack}
+              />
+            </View>
+          </ImageBackground>
+        ) : (
+          <ImageBackground
+            style={{ height: 450 }}
+            source={{ uri: place.image }}
+          >
+            <View style={style.header}>
+              <Icon
+                name="arrow-back-ios"
+                size={28}
+                color={COLORS.white}
+                onPress={navigation.goBack}
+              />
+            </View>
+          </ImageBackground>
+        )}
+
         <View style={style.detailsContainer}>
           <View style={style.iconContainer}>
             <Icon
@@ -103,7 +134,9 @@ const DetailsScreen = ({ navigation, route }) => {
               About the place
             </Text>
           </Text>
-          <Text style={{ marginTop: 10, lineHeight: 22 }}>{place.details}</Text>
+          <Text style={{ marginTop: 10, lineHeight: 22 }}>
+            {place.description}
+          </Text>
 
           <TextInput
             placeholder="Give reviews"
@@ -125,16 +158,50 @@ const DetailsScreen = ({ navigation, route }) => {
           ) : (
             <TouchableOpacity style={style.submitButton} onPress={handleSubmit}>
               <Text style={style.submitText}>
-                {isLoading ? "loading.." : "SUMBIT"}
+                {isLoading ? "loading.." : "SUBMIT"}
               </Text>
             </TouchableOpacity>
           )}
+        </View>
+        <View style={{ paddingLeft: 20 }}>
+          <Text style={{ fontWeight: "600", fontSize: 20, marginBottom: 20 }}>
+            Reviews
+          </Text>
+          {ratings.length !== 0 &&
+            ratings.map((ratingOb) => (
+              <View
+                style={{
+                  marginBottom: 20,
+                  borderBottomColor: "#ccc",
+                  borderBottomWidth: 0.5,
+                  paddingBottom: 10,
+                }}
+              >
+                <Text style={style.text}>{ratingOb.name}</Text>
+                {ratingOb.description.length !== 0 && (
+                  <Text style={{ paddingTop: 5, paddingBottom: 5 }}>
+                    {ratingOb.description}
+                  </Text>
+                )}
+                <StarRating
+                  rating={ratingOb.rating}
+                  size={8}
+                  onStarPress={() => {}}
+                  onChange={() => {}}
+                />
+              </View>
+            ))}
         </View>
       </ScrollView>
     </SafeAreaView>
   );
 };
 const style = StyleSheet.create({
+  text: {
+    fontWeight: "500",
+    fontSize: 14,
+    alignItems: "baseline",
+  },
   iconNavigation: {
     height: 60,
     width: 60,
@@ -163,7 +230,7 @@ const style = StyleSheet.create({
     top: -30,
     borderTopLeftRadius: 30,
     borderTopRightRadius: 30,
-    paddingVertical: 40,
+    paddingTop: 40,
     paddingHorizontal: 20,
     backgroundColor: COLORS.white,
     flex: 0.3,

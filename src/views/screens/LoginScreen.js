@@ -6,6 +6,7 @@ import {
   Button,
   ToastAndroid,
 } from "react-native";
+import user from "../../const/user";
 import Icon from "react-native-vector-icons/Ionicons";
 import { useState } from "react";
 import COLORS from "../../const/colors";
@@ -22,21 +23,23 @@ const LoginScreen = ({ navigation }) => {
   const [errors, setErrors] = useState([]);
 
   const handleLogin = () => {
-    if (username === "") {
-      setErrors(["          Username and password cannot be empty"]);
+    if (username === "" || password === "") {
+      setErrors(["Username and password cannot be empty"]);
     } else {
       setLoading(true);
       loginUser(username, password)
         .then((val) => {
           console.log(val);
           if (val) {
+            user.username = val.name;
+            user.userid = val.id;
+            ToastAndroid.show("Login Successful !!", ToastAndroid.SHORT);
+            navigation.navigate("HomeScreen");
+          } else {
             ToastAndroid.show(
               "Incorrect username or password!!",
               ToastAndroid.SHORT
             );
-          } else {
-            ToastAndroid.show("Login Successful !!", ToastAndroid.SHORT);
-            navigation.navigate("HomeScreen");
           }
           setLoading(false);
         })
@@ -45,6 +48,7 @@ const LoginScreen = ({ navigation }) => {
           setLoading(false);
         });
     }
+    console.log("print here");
   };
 
   const handleChange = (val) => {
@@ -75,13 +79,23 @@ const LoginScreen = ({ navigation }) => {
           secureTextEntry={true}
           value={password}
           onChangeText={setPassword} //right={<TextInput.Icon name="eye-off-outline"/>}
-          // value={password}
         />
         {errors.map((e) => (
           <Text key={e} style={{ color: COLORS.red, marginHorizontal: 55 }}>
             {e}
           </Text>
         ))}
+        {/* <TouchableOpacity onPress={handleLogin}>
+          {isLoading ? (
+            <Text>Loading..</Text>
+          ) : (
+            <View style={styles.button}>
+              <Text style={{ fontWeight: "bold", color: COLORS.white }}>
+                Login
+              </Text>
+            </View>
+          )}a
+        </TouchableOpacity> */}
 
         <TouchableOpacity style={styles.button} onPress={handleLogin}>
           <Text style={{ fontWeight: "bold", color: COLORS.white }}>Login</Text>
@@ -98,14 +112,13 @@ const LoginScreen = ({ navigation }) => {
       {/* <TouchableOpacity onPress={handleLogin}>
         {isLoading ? (
           <Text>Loading..</Text>
-        ) : ( 
-        onPress={() => navigation.navigate("RegisterScreen")}
-        > 
-        <View style={styles.button}>
-          <Text style={{ fontWeight: "bold", color: COLORS.white }}>
-            Login
-          </Text>
-        </View>
+        ) : (
+          <View style={styles.button}>
+            <Text style={{ fontWeight: "bold", color: COLORS.white }}>
+              Login
+            </Text>
+          </View>
+        )}
       </TouchableOpacity> */}
     </View>
   );

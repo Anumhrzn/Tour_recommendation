@@ -27,32 +27,13 @@ const RegisterScreen = ({ navigation }) => {
         .then((val) => {
           console.log(val);
           if (val) {
-            ToastAndroid.show("User already exists !!", ToastAndroid.SHORT);
-          } else {
             navigation.navigate("LoginScreen");
             ToastAndroid.show("Successfully registered !!", ToastAndroid.SHORT);
-          }
-          setLoading(false);
-        })
-        .catch((e) => {
-          console.log(e);
-          setLoading(false);
-        });
-    }
-  };
-
-  const handleEmail = () => {
-    if (email === "") {
-      setErrors(["Username cannot be empty"]);
-    } else {
-      setLoading(true);
-      addUser(email)
-        .then((val) => {
-          console.log(val);
-          if (val) {
-            ToastAndroid.show("User already exists!!", ToastAndroid.SHORT);
           } else {
-            navigation.navigate("LoginScreen");
+            ToastAndroid.show(
+              "User already exists. Enter unique username !!",
+              ToastAndroid.SHORT
+            );
           }
           setLoading(false);
         })
@@ -61,34 +42,20 @@ const RegisterScreen = ({ navigation }) => {
           setLoading(false);
         });
     }
-  };
-
-  const handleChange = (val) => {
-    if (errors.length !== 0) {
-      setErrors([]);
-    }
-    setUsername(val);
-    setEmail(val);
   };
 
   return (
     <View style={styles.container}>
       <Text style={styles.mainheader}>Register</Text>
       <TextInput
-        style={styles.input}
+        style={styles.inputContainer}
         placeholder="Username"
         value={username}
         onChangeText={setUsername}
       />
+
       <TextInput
-        style={styles.input}
-        placeholder="Email"
-        keyboardType="email-address"
-        value={email}
-        onChangeText={setEmail}
-      />
-      <TextInput
-        style={styles.input}
+        style={styles.inputContainer}
         placeholder="Password"
         secureTextEntry={true}
         // value={password}
@@ -131,6 +98,19 @@ const styles = StyleSheet.create({
     borderColor: "#ccc",
     marginBottom: 20,
     borderRadius: 5,
+  },
+  inputContainer: {
+    height: 50,
+    width: "80%",
+    backgroundColor: COLORS.white,
+    borderRadius: 10,
+    flexDirection: "row",
+    justifyContent: "flex-start",
+    paddingHorizontal: 20,
+    alignItems: "center",
+    marginHorizontal: 30,
+    marginBottom: 20,
+    elevation: 5,
   },
   button: {
     width: "50%",
