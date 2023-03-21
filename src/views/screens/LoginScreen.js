@@ -24,7 +24,7 @@ const LoginScreen = ({ navigation }) => {
 
   const handleLogin = () => {
     if (username === "" || password === "") {
-      setErrors(["Username and password cannot be empty"]);
+      setErrors(["Username or password cannot be empty"]);
     } else {
       setLoading(true);
       loginUser(username, password)
