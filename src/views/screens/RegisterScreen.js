@@ -58,18 +58,14 @@ const RegisterScreen = ({ navigation }) => {
         style={styles.inputContainer}
         placeholder="Password"
         secureTextEntry={true}
-        // value={password}
-        // onChangeText={setPassword}
-      />
-      <TextInput
-        style={styles.input}
-        placeholder="Confirm Password"
-        secureTextEntry={true}
         value={password}
         onChangeText={setPassword}
       />
+
       <TouchableOpacity style={styles.button} onPress={handleRegister}>
-          <Text style={{ fontWeight: "bold", color: COLORS.white }}>Register</Text>
+        <Text style={{ fontWeight: "bold", color: COLORS.white }}>
+          Register
+        </Text>
       </TouchableOpacity>
     </View>
   );

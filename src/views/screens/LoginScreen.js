@@ -24,7 +24,7 @@ const LoginScreen = ({ navigation }) => {
 
   const handleLogin = () => {
     if (username === "" || password === "") {
-      setErrors(["Username and password cannot be empty"]);
+      setErrors(["Username or password cannot be empty"]);
     } else {
       setLoading(true);
       loginUser(username, password)
@@ -137,7 +137,7 @@ const styles = StyleSheet.create({
     fontSize: 30,
     fontWeight: "bold",
     color: COLORS.primary,
-    marginHorizontal: 100,
+    marginHorizontal: 70,
     marginTop: 100,
   },
   button: {
@@ -183,14 +183,14 @@ const styles = StyleSheet.create({
     fontSize: 14,
     alignItems: "center",
     flexDirection: "row",
-    marginHorizontal: 120,
+    marginHorizontal: 100,
   },
   navtext: {
     color: COLORS.primary,
     fontWeight: "bold",
     alignItems: "center",
     fontSize: 14,
-    marginHorizontal: 170,
+    marginHorizontal: 150,
     // marginTop: 20,
   },
 });
